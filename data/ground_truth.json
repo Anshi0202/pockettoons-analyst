@@ -1,0 +1,53 @@
+{
+  "mau_reported": {
+    "Q2": 4449,
+    "Q3": 5328,
+    "QoQ_change": "+19.8%"
+  },
+  "mau_excluding_bots": {
+    "Q2": 4449,
+    "Q3": 4943,
+    "QoQ_change": "+11.1%"
+  },
+  "net_revenue_reported_usd": {
+    "Q2": 20794.62,
+    "Q3": 20302.43,
+    "QoQ_change": "-2.4%"
+  },
+  "net_revenue_true_usd": {
+    "Q2": 20794.62,
+    "Q3": 19070.34,
+    "QoQ_change": "-8.3%"
+  },
+  "true_revenue_by_month_usd": {
+    "2026-04": 6335.32,
+    "2026-05": 7007.56,
+    "2026-06": 7451.74,
+    "2026-07": 7336.12,
+    "2026-08": 6192.22,
+    "2026-09": 5542.0
+  },
+  "bot_accounts": 1143,
+  "dq2_pix_rows_in_brl": 185,
+  "dq3_stale_active_users": 47,
+  "cap_hit_rate_free_active_days": {
+    "Q2": 0.1913,
+    "Q3": 0.0743
+  },
+  "new_subs_by_trigger": {
+    "Q2_baseline": 41,
+    "Q2_cap": 394,
+    "Q2_premium_wall": 146,
+    "Q3_baseline": 35,
+    "Q3_cap": 161,
+    "Q3_premium_wall": 127
+  },
+  "row_counts": {
+    "users": 20708,
+    "sessions": 232354,
+    "content_views": 564780,
+    "transactions": 5965,
+    "marketing_spend": 815,
+    "content_catalog": 81
+  }
+}
