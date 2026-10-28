@@ -1,0 +1,89 @@
+Session MAU Q2 -> Q3
+    report: 4,449 -> 5,328 (+19.8%)
+    SQL:    4,449 -> 5,328 (+19.8%)
+Content-view MAU Q2 -> Q3
+    report: 4,448 -> 5,060 (+13.8%)
+    SQL:    4,448 -> 5,060 (+13.8%)
+Session-only user-months Q2 / Q3
+    report: 2 / 805
+    SQL:    2 / 805
+Net revenue Q2 -> Q3
+    report: $20,795 -> $20,302 (-2.4%)
+    SQL:    $20,795 -> $20,302 (-2.4%)
+(trap) all rows incl. failed
+    report: not used
+    SQL:    $22,105 -> $28,487
+Revenue per active user-month
+    report: $1.56 -> $1.27
+    SQL:    $1.56 -> $1.27
+Active-user payer conversion
+    report: 20.5% -> 14.3%
+    SQL:    20.5% -> 14.3%
+    note:   report's definition: any successful txn, refunds included (purchases only gives 20.4%)
+Nonstandard pix rows (success / failed)
+    report: 49 / 136
+    SQL:    failed:136 (first 2026-08-01) / success:49 (first 2026-08-03)
+Pix normalisation effect on Q3
+    report: -$1,217 -> $19,085 (-8.2%)
+    SQL:    -$1,217 -> $19,085 (-8.2%)
+    note:   report prices all odd PPV at $2.99; story.md (true /5 ratio): -$1,232 -> $19,070 (-8.3%)
+Failure rate pix/oxxo/pse Q2 -> Q3
+    report: 6.3/13.5/7.3% -> 56.4/58.9/62.7%
+    SQL:    oxxo Q2 13.4%; oxxo Q3 58.9%; pix Q2 6.3%; pix Q3 56.3%; pse Q2 7.3%; pse Q3 62.7%
+(not in report) local-method failure by month
+    report: -
+    SQL:    04:8.0%, 05:7.0%, 06:10.6%, 07:7.8%, 08:78.8%, 09:69.4%
+    note:   onset is Aug 1, not Jul 1
+(not in report) other methods failure
+    report: -
+    SQL:    Q2 5.2%, Q3 6.8%
+Q3 failed sub/PPV attempts on local rails
+    report: 257 observed
+    SQL:    257
+Affiliate Q3: user-months / payer-months / revenue
+    report: 1,486 / 2 / $19.98
+    SQL:    1,486 / 2 / $19.98
+TikTok: user-month change / payer-months Q2 -> Q3
+    report: +871 / 38 -> 29
+    SQL:    +871 / 38 -> 29
+Affiliate + TikTok share of user-month increase
+    report: ~89%
+    SQL:    89.3% of +2,638
+(context) user-month change by source
+    report: -
+    SQL:    organic +799, referral +158, google_search -707, meta_ads -245, tiktok_ads +871, influencer +276, affiliate_network +1,486
+Spend TikTok / Google Q2 -> Q3
+    report: $1,127 -> $2,707 / $5,008 -> $883
+    SQL:    $1,127 -> $2,707 / $5,008 -> $883
+(not in report) total paid spend
+    report: -
+    SQL:    $10,173 -> $6,842 (-33%)
+ID+PH+VN: user-month change / Q3 revenue / revenue change
+    report: +2,220 / ~$66
+    SQL:    +2,220 / $2,197 / +66
+US (incl. USA): user-month change / revenue change
+    report: -218 / -$564
+    SQL:    -218 / -564
+    note:   report counts revenue in active user-months only; all US revenue gives -574
+Premium releases Q2 / Q3 (titles, episodes)
+    report: 7, 173 / 1, 25
+    SQL:    Q2: 7, 173 / Q3: 1, 25
+Paid-premium views Q2 -> Q3
+    report: 30,826 -> 25,569 (-17%)
+    SQL:    30,826 -> 25,569 (-17%)
+Free views Q2 -> Q3
+    report: 156,554 -> 200,911
+    SQL:    156,554 -> 200,911
+PPV views change
+    report: -41.6%
+    SQL:    964 -> 563 (-41.6%)
+Raw PPV sales change
+    report: -$721
+    SQL:    $2,073 -> $1,353 (-721)
+(not in report) max free eps per user-day by month; % of free user-days at max
+    report: agent: 'no day exceeded 8'
+    SQL:    04: max 5, 26.3% at max; 05: max 5, 26.3% at max; 06: max 5, 26.2% at max; 07: max 8, 10.2% at max; 08: max 8, 10.2% at max; 09: max 8, 9.9% at max
+(not in report) new sub starts, pre-April signups, by month
+    report: -
+    SQL:    04:546, 05:95, 06:94, 07:47, 08:30, 09:18
+    note:   story.md: 96/94 (May/Jun) -> 47/30/18
