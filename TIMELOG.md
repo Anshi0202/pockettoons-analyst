@@ -20,7 +20,7 @@
 - Tests: 46 offline checks pass; 4/4 live smoke tests correct (MAU, net revenue, mobile sessions, top channel), ~$0.007 total.
 - Observation: on simple lookups the data-quality checks are shallow (didn't flag low-activity accounts or the new affiliate channel). Revisit in Phase 3/4.
 
-## Phase 3: Investigation (29 Oct, 04:29–)
+## Phase 3: Investigation (29 Oct, 04:29–04:40)
 
 - Run 1 (baseline, no changes): 40/40 queries, 6 min, $0.08. All numbers verified against SQL.
   Found: headline, LatAm payments, channel shift, USA/US. Partial: bots, BRL bug, red herring.
