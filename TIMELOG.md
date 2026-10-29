@@ -25,3 +25,20 @@
 - Run 1 (baseline, no changes): 40/40 queries, 6 min, $0.08. All numbers verified against SQL.
   Found: headline, LatAm payments, channel shift, USA/US. Partial: bots, BRL bug, red herring.
   Missed: free-limit change (largest cause). Never checked whether existing users' conversion fell, or tested the free-episode rule against the data.
+
+## Phase 4: Eval (29 Oct, 05:26–06:25, in progress)
+
+- Built the eval: 18 questions with SQL answer keys (8 lookups, 6 traps, 3 declines, GM question x3),
+  auto-marker, runner, compare and regrade scripts. Committed before any run.
+- Baseline (agent unchanged): 20 runs, 22 min, $0.20. Database unchanged.
+  Lookups 8/8. Declines 3/3. Traps 4/6: fell for stale subscriber status (568 vs 530 paying)
+  and Brazil revenue with pix stored in BRL.
+  Free-limit question asked directly: found 5 -> 8 on 1 Jul.
+  GM question x3: 70% / 60% / 70% (proxy checklist). All found pix amounts, LatAm payment failures,
+  channel shift and low-quality affiliate traffic. None found the free-limit change (0/3).
+- Marker fix: three checklist rules misfired on real answers (quarter definition read as run-rate;
+  revenue -9.1% read as MAU growth; "a 7.9% decline" missed). Fixed, tests added, baseline re-marked
+  (80/50/90 -> 70/60/70). Logged in eval/questions.yaml.
+- Prompt v2 added behind PT_PROMPT=v2 (default unchanged): steps 3-5 made concrete (measure stated
+  rules over time, monthly trend and run-rate, re-measure rate changes in a fixed group) plus a
+  step 9 self-check that ranks drivers.

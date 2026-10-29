@@ -13,6 +13,14 @@
 #   decline  same as text; the right answer is that the data can't answer it or the action isn't allowed.
 #   investigation  a checklist of regex checks; score = share of checks hit. It is a PROXY for the
 #            hand-graded rubric (investigation/grading_rubric.md), used to compare runs, not to replace it.
+# CHANGE LOG (grading rules changed after a run, applied to every run via eval/regrade.py):
+#   29 Oct, after the baseline run: three investigation checks misfired on real answers.
+#   real_mau_9_13 matched "revenue ... down 9.1%" (now needs MAU/active users/viewers just before,
+#   and no "revenue"); run_rate matched quarter definitions like "April-June versus July-September"
+#   (now needs a June and a September dollar figure, or "run-rate"); revenue_down_6_10 missed
+#   "a 7.9% decline" (a decline word after the number now counts). The sentences are in
+#   eval/test_grader.py. Baseline was re-graded with the same rules; both scores are reported.
+#
 # `flags` (optional): regexes; "flagged" = the answer warns about the data issue behind the item.
 #            For number items, giving both an accepted value and a trap value (i.e. contrasting
 #            them) also counts as a warning.
@@ -180,11 +188,11 @@ questions:
     checks:
       headline:          {all: ['19\.8', '2\.4']}
       bots_linked:       {any: ['affiliate[\s\S]{0,200}\b(bots?|non-human|fake|fraud\w*)\b', '\b(bots?|non-human|fake|fraud\w*)\b[\s\S]{0,200}affiliate']}
-      real_mau_9_13:     {pct_between: [9.0, 13.0]}
+      real_mau_9_13:     {pct_between: [9.0, 13.0], near: 'MAU|active users|viewers', not_near: 'revenue'}
       pix_amounts:       {any: ['49\.90']}
       revenue_down_6_10: {neg_pct_between: [6.5, 10.0]}
       free_limit_5_to_8: {any: ['\b5\b\s*(to|→|->|-)\s*8\b', '\b(limit|cap)\b[^.\n]{0,60}\b5\b', '\b5\b[^.\n]{0,40}\b(free )?(episodes?|limit|cap)\b']}
       latam_failures:    {all: ['\b(pix|oxxo|pse)\b', 'fail']}
       aug_onset:         {any: ['(august|\baug\b|2026-08)[^.\n]{0,80}fail', 'fail[^.\n]{0,80}(august|\baug\b|2026-08)']}
       channel_shift:     {all: ['google|search', 'tiktok']}
-      run_rate:          {any: ['(june|\bjun\b)(?!\s*30)[^\n]{0,120}(september|\bsep\b)(?!\s*30)', 'run[- ]rate']}
+      run_rate:          {any: ['run[- ]rate', '\bjune?\b[^.\n]{0,60}\$\s?\d[\d,.]*K?[^.\n]{0,100}\bsep(tember)?\b', '\bsep(tember)?\b[^.\n]{0,60}\$\s?\d[\d,.]*K?[^.\n]{0,100}\bjune?\b']}

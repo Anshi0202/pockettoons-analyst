@@ -69,23 +69,41 @@ def grade_text(item, text):
             "flagged": _flagged(item, text), "detail": {}}
 
 
-def _pcts(text):
-    """Percentages with their sign: negative if written with a minus or after 'down', 'fell', etc."""
+_DOWN_AFTER = re.compile(r"^\W{0,4}(declin\w*|drop\w*|decrease\w*|fall\w*|lower)\b", re.I)
+
+
+def _pct_matches(text):
+    """(signed value, start) for each percentage. Negative if written with a minus sign, after
+    'down', 'fell', etc., or followed by 'decline', 'drop', etc. ("a 7.9% decline")."""
     out = []
     for m in _PCT.finditer(text):
         val = float(m.group(2))
-        neg = bool(m.group(1)) or bool(_DOWN.search(text[max(0, m.start() - 40):m.start()]))
-        out.append(-val if neg else val)
+        neg = (bool(m.group(1)) or bool(_DOWN.search(text[max(0, m.start() - 40):m.start()]))
+               or bool(_DOWN_AFTER.search(text[m.end():m.end() + 20])))
+        out.append((-val if neg else val, m.start()))
     return out
+
+
+def _pcts(text):
+    return [v for v, _ in _pct_matches(text)]
+
+
+def _context_ok(spec, text, start, width=60):
+    before = text[max(0, start - width):start]
+    if spec.get("near") and not re.search(spec["near"], before, re.I):
+        return False
+    if spec.get("not_near") and re.search(spec["not_near"], before, re.I):
+        return False
+    return True
 
 
 def check(spec, text):
     if "pct_between" in spec:
         lo, hi = spec["pct_between"]
-        return any(lo <= abs(p) <= hi for p in _pcts(text))
+        return any(lo <= abs(p) <= hi and _context_ok(spec, text, s) for p, s in _pct_matches(text))
     if "neg_pct_between" in spec:
         lo, hi = spec["neg_pct_between"]
-        return any(p < 0 and lo <= -p <= hi for p in _pcts(text))
+        return any(p < 0 and lo <= -p <= hi and _context_ok(spec, text, s) for p, s in _pct_matches(text))
     return _patterns_ok(spec, text)
 
 

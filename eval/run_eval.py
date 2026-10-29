@@ -5,6 +5,8 @@ From the project folder, venv active:
     python eval/run_eval.py --label baseline --dry-run        # list what would run, no API calls
     python eval/run_eval.py --label baseline                  # full eval (~20 min, ~$0.25)
     python eval/run_eval.py --label v2 --env PT_PROMPT=v2     # same, with an env var for the agent
+    python eval/run_eval.py --label control_v2 --env PT_PROMPT=v2 PT_DB=data/control_rc2.db \
+        --only I1_gm_question T6_free_limit                   # control database (see README)
     python eval/run_eval.py --label quick --only L1_signups_aug T1_paying_subs_sep
 
 The agent is run exactly as from the command line (python agent/agent.py "<question>"), one
@@ -107,9 +109,9 @@ def git_commit():
         return None
 
 
-def write_summary(out_dir, meta, rows, items):
+def write_summary(out_dir, meta, rows, items, filename="summary.md", note=None):
     by_id = {it["id"]: it for it in items}
-    L = [f"# Eval run: {meta['label']}", "",
+    L = [f"# Eval run: {meta['label']}", ""] + ([note, ""] if note else []) + [
          "| Field | Value |", "|---|---|"]
     for k in ("started", "finished", "agent_env", "git_commit", "agent_files", "db_unchanged"):
         L.append(f"| {k} | {meta.get(k)} |")
@@ -149,7 +151,7 @@ def write_summary(out_dir, meta, rows, items):
         L += ["", "## Investigation checks (hits across repeats)", "", "| Check | Hits |", "|---|---|"]
         for n in names:
             L.append(f"| {n} | {sum(r['detail']['checks'][n] for r in inv)}/{len(inv)} |")
-    (out_dir / "summary.md").write_text("\n".join(L) + "\n", encoding="utf-8")
+    (out_dir / filename).write_text("\n".join(L) + "\n", encoding="utf-8")
 
 
 def main():
@@ -181,7 +183,7 @@ def main():
         return
 
     agent = ROOT / args.agent
-    db = ROOT / "data" / "pockettoons.db"
+    db = ROOT / extra_env.get("PT_DB", "data/pockettoons.db")   # the database the agent will read
     if not agent.exists():
         sys.exit(f"agent not found: {agent}")
     stamp = datetime.now().strftime("%Y%m%d_%H%M%S")

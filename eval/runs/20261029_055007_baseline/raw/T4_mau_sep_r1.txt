@@ -1,0 +1,21 @@
+[ 1] get_schema
+[ 2] sql 1/40: Measure September 2026 unique active users under the standard session-based MAU definition -> 2 rows (203 ms)
+[ 3] hypotheses: 2 supported
+[ 4] sql 2/40: Check September session platform categories and whether unusual platform values suggest a  -> 3 rows (46 ms)
+[ 5] sql 3/40: Verify September session users link to known accounts and inspect session-duration bounds  -> 1 rows (62 ms)
+
+==============================================================================
+## Answer
+September 2026 MAU was **5,473 users**, using the standard session-based definition.
+
+## Definition and scope
+MAU is the number of distinct users with at least one session from **September 1–30, 2026**, inclusive. If defined instead as users who watched content, the count was **5,178**.
+
+## Data quality
+All 5,473 session users matched a user record. Sessions appeared on the three platforms recorded: Android, iOS, and web. Session durations ranged from 2 to 63,030 seconds; counting users with any session means duration does not change the MAU figure.
+
+## Confidence and open questions
+**High** for session-based MAU. The alternative count reflects a narrower activity definition—watching content rather than having a session.
+==============================================================================
+model: gpt-6-luna | model calls: 6 | run_sql calls: 3 (0 errors) | tokens: 15,227 in / 1,074 out (334 reasoning) | estimated cost: $0.0021 | wall time: 17 s (model 16 s) | stopped by: model finished
+Trace: C:\Users\HP\pockettoons-analyst\investigation\traces\20261029_055343_what-was-mau-in-september-2026.md

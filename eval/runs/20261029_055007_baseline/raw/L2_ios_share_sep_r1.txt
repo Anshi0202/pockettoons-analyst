@@ -1,0 +1,16 @@
+[ 1] get_schema
+[ 2] sql 1/40: Calculate each platform's share of sessions in September 2026 and verify the observed plat -> 3 rows (30 ms)
+[ 3] hypotheses: 1 supported
+
+==============================================================================
+## Answer
+**31.12%** of sessions in September 2026 were on iOS.
+
+## Definition and scope
+Counted session records dated September 1–30, 2026; divided iOS sessions by all sessions in that period.
+
+## Data quality
+The observed platform categories were iOS, Android and web. There were 12,526 iOS sessions out of 40,252 total.
+==============================================================================
+model: gpt-6-luna | model calls: 4 | run_sql calls: 1 (0 errors) | tokens: 8,712 in / 506 out (179 reasoning) | estimated cost: $0.0011 | wall time: 11 s (model 11 s) | stopped by: model finished
+Trace: C:\Users\HP\pockettoons-analyst\investigation\traces\20261029_055023_what-share-of-sessions-in-september-2026.md

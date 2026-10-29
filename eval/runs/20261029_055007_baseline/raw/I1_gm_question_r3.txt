@@ -1,0 +1,100 @@
+[ 1] get_schema
+[ 2] sql 1/40: Establish the monthly session-based MAU trend, successful net revenue, payer counts and tr -> 6 rows (187 ms)
+[ 3] hypotheses: 4 open, 1 supported
+[ 4] sql 2/40: Check transaction category spellings, success versus failure counts, refund signs, payment -> 38 rows (14 ms)
+[ 5] sql 3/40: Inspect the actual country and acquisition-source categories and their user-base sizes to  -> 54 rows (94 ms)
+[ 6] sql 4/40: Check platform values and baseline session/user volume before testing whether platform mix -> 3 rows (171 ms)
+[ 7] sql 5/40: Validate content-view categories and watch-duration ranges as an engagement and product-us -> 3 rows (625 ms)
+[ 8] sql 6/40: Locate anomalous high-value PIX transactions and see their monthly contribution alongside  -> 100 rows (0 ms)
+[ 9] sql 7/40: Decompose monthly monetization into payer conversion, subscription and PPV revenue, refund -> 6 rows (281 ms)
+[10] sql 8/40: Check current subscription snapshot categories and their scale before interpreting subscri -> 3 rows (14 ms)
+[11] sql 9/40: Confirm content-tier categories and release coverage for assessing whether content supply  -> 2 rows (0 ms)
+[12] sql 10/40: Test whether acquisition-source mix, particularly newly appearing sources, accounts for MA -> 7 rows (625 ms)
+[13] sql 11/40: Determine which countries drive the active-user increase and whether monetization changes  -> 9 rows (516 ms)
+[14] sql 12/40: Quantify non-standard high-value successful transaction records by quarter and payment met -> 3 rows (0 ms)
+[15] sql 13/40: Check whether premium-content release cadence changed around the quarter when PPV purchasi -> 18 rows (0 ms)
+[16] sql 14/40: Compare monthly content consumption by content tier and access type to determine whether e -> 24 rows (1280 ms)
+[17] hypotheses: 2 open, 4 supported
+[18] sql 15/40: Cross-check the MAU trend using distinct viewers and calculate the exact impact of transac -> 6 rows (921 ms)
+[19] sql 16/40: Test whether the payment acceptance rate or payment-method mix worsened in Q3, separating  -> 44 rows (16 ms)
+[20] sql 17/40: Identify exact high/low PIX transaction values and counts so the revenue correction is aud -> 3 rows (0 ms)
+[21] sql 18/40: Review monthly marketing spend and channel categories to see whether the affiliate-driven  -> 27 rows (16 ms)
+[22] sql 19/40: Compare active-user intensity by acquisition source, testing whether affiliate growth repr -> 13 rows (2140 ms)
+[23] sql 20/40: Get quarter-level revenue before and after excluding out-of-policy amounts, plus exact fai -> 2 rows (15 ms)
+[24] sql 21/40: Produce a consistent quarter-average MAU and monetization decomposition, including payer c -> 2 rows (265 ms)
+[25] sql 22/40: Measure how signup volume shifted by acquisition source and country, particularly whether  -> 100 rows (47 ms)
+[26] sql 23/40: Isolate checkout acceptance by transaction type and payment method, using ordinary-price f -> 32 rows (14 ms)
+[27] sql 24/40: Quantify quarter-over-quarter marketing investment changes by channel to connect acquisiti -> 9 rows (0 ms)
+[28] sql 25/40: Estimate incremental Q3 completed checkouts and sales lost if each payment rail had retain -> 16 rows (0 ms)
+[29] sql 26/40: Total signups by acquisition source for Q2 and Q3, to quantify the acquisition mix and the -> 13 rows (0 ms)
+[30] sql 27/40: Quantify the impact of the US/USA spelling inconsistency and compare normalized country-le -> ERROR no such column: date (0 ms)
+[31] sql 28/40: Summarize payment acceptance deterioration across checkout methods, including the contribu -> 16 rows (14 ms)
+[32] sql 29/40: Quantify the effect of combining the US and USA spelling variants on quarterly average MAU -> 16 rows (890 ms)
+[33] hypotheses: 5 supported, 1 rejected, 1 inconclusive
+[34] sql 30/40: Locate the month when checkout failures accelerated, to distinguish a gradual conversion d -> 6 rows (0 ms)
+[35] sql 31/40: Pinpoint the timing and scale of acceptance failures on PIX, OXXO, and PSE after the quart -> 18 rows (0 ms)
+[36] sql 32/40: Confirm when the unusual PIX pricing/refund records started and whether they are confined  -> 5 rows (0 ms)
+[37] sql 33/40: Quantify the alternative content-viewer definition of MAU and show how much of the reporte -> 2 rows (765 ms)
+[38] sql 34/40: Identify which acquisition sources account for the widening gap between session-active use -> 13 rows (1750 ms)
+[39] sql 35/40: Check for malformed or implausible session records that could inflate session-based MAU. -> 6 rows (296 ms)
+[40] sql 36/40: Check whether a small set of extreme session users could be driving the MAU trend or indic -> 6 rows (312 ms)
+[41] sql 37/40: Assess whether very short sessions are inflating session-based MAU, especially after two-s -> 6 rows (407 ms)
+[42] sql 38/40: Quantify a conservative MAU sensitivity to the new very-short-session records without trea -> 2 rows (344 ms)
+[43] hypotheses: 5 supported, 2 rejected, 1 inconclusive
+
+==============================================================================
+## Answer
+
+Q3 did not monetize the MAU growth: average monthly session-based MAU rose **19.8%**, but average monthly payers fell **16%** and payer conversion dropped from **20.4% to 14.4%**. Reported net transaction revenue was down just **2.4%**, but that is flattered by **$1,392 of unusual PIX amounts**; excluding those records as a sensitivity, Q3 revenue was **$18,910, down 9.1%** from Q2.
+
+The clearest immediate issue is a sharp payment-acceptance deterioration starting in August. Alongside that, Q3’s growth included a large, very low-engagement affiliate cohort, while premium releases and PPV activity fell.
+
+## Definition and scope
+
+- Latest data date: **September 30, 2026**. Q2 means April–June 2026; Q3 means July–September 2026.
+- MAU is distinct users with at least one recorded session in a calendar month; the quarter figure is the **average of its three monthly MAUs**. That gives **4,449 in Q2** and **5,328 in Q3**.
+- Revenue is the sum of successful subscription and PPV transactions plus negative successful refund records; failed attempts are excluded. It is transaction revenue, not an accounting revenue-recognition measure.
+- As a useful alternative, monthly unique content viewers rose from **4,448 to 5,060 (+13.8%)**, less than session-based MAU. The choice of activity definition therefore changes the reported growth materially.
+
+## Data quality
+
+- **PIX amounts need finance/provider reconciliation.** The Q3 data includes 29 successful PIX subscriptions at **$49.90**, 3 PPV charges at **$14.90**, and 2 refunds at **-$49.90**. These records net to **+$1,392**. They are outside the otherwise observed subscription price of $9.99 and typical PPV amounts of $1.99–$2.99, but could reflect legitimate local pricing or a currency issue. Excluding them gives **$18,910.43** Q3 net revenue; do not treat that as the official figure until verified.
+- Refund amounts are negative, and failed transactions are logged as attempts. Checkout failures rose from **5.7% of attempts in Q2 to 15.0% in Q3**; the monthly rate jumped from **6.9% in July to 22.2% in August**.
+- Session records had no nonpositive durations and no user had over 100 sessions in a month. However, sessions as short as **2 seconds** appear starting in July. Excluding users whose sessions were *all* under 30 seconds reduces Q3 average MAU from **5,328 to 5,140**, but still leaves it **15.5% above Q2**. This is a sensitivity, not a claim that those sessions are invalid.
+- The country data uses both `US` and `USA`; combining them gives average monthly MAU of **1,953 in Q2 and 1,880 in Q3**, so this inconsistency does not explain the overall increase. There is no test/bot flag in the data.
+
+## Findings
+
+1. **More users, fewer payers.** Average monthly payers fell from **909 to 763** as average monthly MAU rose from **4,449 to 5,328**. Monthly payer conversion declined **6.0 percentage points**, from **20.4% to 14.4%**. This is the central monetization problem.
+
+2. **A sudden payment problem is likely masking the underlying revenue decline.** Checkout success rates on PIX, OXXO and PSE fell sharply in Q3. For subscriptions, PIX fell from **94.0% to 38.7%**, OXXO from **89.0% to 41.7%**, and PSE from **91.7% to 29.7%**. If Q3 had retained Q2 success rates for each payment method and product, estimated additional sales would be about **$2,150**. This is a mechanical counterfactual, not a forecast; the failure spike is concentrated in August and should be investigated urgently.
+
+3. **The raw revenue headline is materially flattered by the PIX amounts.** Reported net revenue moved from **$20,795 in Q2 to $20,302 in Q3**. Excluding the unusual PIX records as a sensitivity, Q3 was **$18,910**, or **$1,884 below Q2**. The product mix also weakened: subscription revenue was **$19,201 in Q2 and $19,439 in Q3**, while PPV revenue fell from **$2,073 to $1,353**. The PIX adjustment and product changes describe overlapping parts of the same revenue total; do not add them as separate losses.
+
+4. **Some of the MAU growth came from low-engagement acquisition.** Affiliate_network had **1,442 Q3 signups** and averaged **495 session-active users per month**, but only **228 monthly viewers**, **1 monthly payer**, and **$19.98 total Q3 revenue**. Those actives averaged **1.98 sessions and 1.1 views per month**. TikTok signups also rose from **593 to 1,320**, while its average monthly payers fell from **12.7 to 9.7**. These channels’ growth is consistent with a lower-monetizing mix, not proof of its cause.
+
+5. **Marketing allocation shifted in the same direction.** Q3 Google Search spend was **$883**, down from **$5,008** in Q2; Google Search signups fell from **828 to 147**. TikTok spend rose from **$1,127 to $2,707** as its signups more than doubled. These changes align with the source mix above, but source-attributed revenue is not a controlled measure of campaign incrementality.
+
+6. **Premium-content and PPV activity weakened together.** Premium releases fell from **7 in Q2 to 1 in Q3**, with none added in August or September. Average monthly PPV buyers fell from **294 to 171**, PPV views from **964 to 563**, and PPV revenue by **$721** quarter over quarter. The timing is consistent with reduced premium supply contributing to lower PPV activity, but does not establish causation. The affiliate and country views are overlapping ways of describing the same growth, not additive drivers.
+
+## Hypotheses rejected
+
+- **The US/USA country-label inconsistency caused the MAU increase:** rejected. Combined US/USA MAU declined from **1,953 to 1,880** average monthly users.
+- **Very short sessions explain all or most of the increase:** rejected. Excluding users whose sessions were all under 30 seconds still leaves Q3 MAU **15.5% above Q2**. Bot or test traffic cannot be fully ruled out because the data has no identifying flag.
+
+## Recommendations
+
+1. **Open a billing incident review for PIX, OXXO and PSE immediately.** Check provider/configuration changes around August, retries, payment-state mapping and settlement currency. The Q2-rate counterfactual estimates about **$2,150 in Q3 sales** at risk. Track success rate and recovered payments by method, product and day.
+2. **Reconcile PIX prices and refunds with Finance before presenting an unqualified revenue trend.** The flagged records move the Q3 comparison from **-2.4% reported to -9.1% excluding those records**. Add alerts for unexpected amounts and currency inconsistencies.
+3. **Stop optimizing acquisition to signups or MAU alone.** Hold or limit further affiliate expansion until its view, payer and fraud quality is validated. Run a controlled test reallocating spend toward better-monetizing sources; do not simply restore Google Search spend without an incrementality test. Measure cost per *paying* user and payer conversion by signup cohort, country and source.
+4. **Test a renewed premium-release cadence.** Q3 PPV revenue was **$721 below Q2**, alongside fewer premium releases and lower PPV views. Test release timing or packaging and measure premium views, view-to-purchase conversion and net PPV revenue against a control.
+5. **Add platform and traffic-quality instrumentation.** The transaction records do not include platform, and there is no test/bot flag. Linking payment outcomes to platform and adding traffic-quality checks would help distinguish checkout, acquisition and measurement effects.
+
+## Confidence and open questions
+
+- **High confidence:** the Q2/Q3 arithmetic, falling payer conversion, August payment failure spike, and the stated impact of the unusual PIX records on reported revenue.
+- **Medium confidence:** low-engagement acquisition and reduced premium-content activity contributed to the divergence. The patterns are strong, but the available data does not isolate causation.
+- **Open:** Are the PIX prices valid localized prices or a currency/configuration error? What changed in payment handling around August? Are affiliate users legitimate, and do they convert with more time? Transactions cannot be linked to platform, so platform-specific causes remain untested.
+==============================================================================
+model: gpt-6-luna | model calls: 19 | run_sql calls: 38 (1 errors) | tokens: 419,334 in / 28,901 out (16,994 reasoning) | estimated cost: $0.0564 | wall time: 308 s (model 295 s) | stopped by: model finished
+Trace: C:\Users\HP\pockettoons-analyst\investigation\traces\20261029_060710_mau-is-up-20-qoq-but-revenue-is-flat-boa.md

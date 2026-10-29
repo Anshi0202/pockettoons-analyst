@@ -83,6 +83,25 @@ if run2.exists():
 else:
     print("skip: investigation/run2_console.txt not found")
 
+# ---- sentences from the baseline eval's real answers that the first rules misgraded --
+from grade import check  # noqa: E402
+C = ITEMS["I1_gm_question"]["checks"]
+expect("quarter definition is not a run-rate (run 1)",
+       check(C["run_rate"], "Using April–June versus July–September 2026, average monthly session-based MAU "
+                            "rose **19.8%**, while recorded net revenue fell **2.4%**."), False)
+expect("quarter definition is not a run-rate (run 3)",
+       check(C["run_rate"], "Q2 means April–June 2026; Q3 means July–September 2026."), False)
+expect("revenue -9.1% is not real-MAU growth (run 3)",
+       check(C["real_mau_9_13"], "excluding those records as a sensitivity, Q3 revenue was **$18,910, down 9.1%** from Q2."), False)
+expect("revenue -9.1% still counts as revenue down (run 3)",
+       check(C["revenue_down_6_10"], "Q3 revenue was **$18,910, down 9.1%** from Q2."), True)
+expect("'a 7.9% decline' counts as revenue down (run 2)",
+       check(C["revenue_down_6_10"], "versus **$20,795 for Q2**, or **$6,932/month**—a **7.9% decline** in monthly revenue."), True)
+expect("bot-free MAU growth still counts",
+       check(C["real_mau_9_13"], "Excluding bot-like affiliate accounts, MAU grew 11.1%."), True)
+expect("June vs September revenue counts as run-rate",
+       check(C["run_rate"], "Corrected revenue was $7,452 in June and $5,542 in September."), True)
+
 # ---- every investigation check can be hit (no check is impossible) ----------------
 ideal = """MAU rose 19.8% but revenue fell 2.4%. About 1,100 affiliate accounts look like bots, so real MAU
 grew 11.1%. Pix amounts of $49.90 appear from August; converting them, revenue is down 8.3%.

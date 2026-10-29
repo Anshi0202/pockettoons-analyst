@@ -1,0 +1,20 @@
+[ 1] get_schema
+[ 2] sql 1/40: Checks the observed view and catalog categories before measuring free episodes and their d -> 5 rows (312 ms)
+[ 3] sql 2/40: Tests whether observed free-episode consumption has a monthly ceiling or shift during the  -> 6 rows (1375 ms)
+[ 4] hypotheses: 3 open
+[ 5] sql 3/40: Identifies the precise observed transition date and verifies whether user-days ever exceed -> 1 rows (859 ms)
+[ 6] sql 4/40: Checks whether free-tagged viewing rows actually belong to free-tier content, which could  -> 4 rows (844 ms)
+[ 7] hypotheses: 1 supported, 2 rejected
+
+==============================================================================
+## Answer
+In the data, the effective daily free-episode limit appears to have increased from **5 to 8 on July 1, 2026**. Free-viewing records show no user watched more than 5 distinct episodes per day through June, or more than 8 per day from July onward.
+
+## Definition and scope
+I counted distinct episodes watched per user per day where the viewing record was tagged `free`. The available viewing data covers **April 1–September 30, 2026**.
+
+## Data quality
+All free-tagged viewing records matched free-tier content. The database contains viewing activity, not an explicit history of policy settings, so the dates indicate an **observed effective limit**, not a confirmed configuration change. The data does not cover January–March or October–December 2026.
+==============================================================================
+model: gpt-6-luna | model calls: 7 | run_sql calls: 4 (0 errors) | tokens: 22,909 in / 2,557 out (1,046 reasoning) | estimated cost: $0.0036 | wall time: 31 s (model 27 s) | stopped by: model finished
+Trace: C:\Users\HP\pockettoons-analyst\investigation\traces\20261029_055431_according-to-the-data-what-is-the-daily.md
