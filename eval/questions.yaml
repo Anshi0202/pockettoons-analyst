@@ -1,0 +1,190 @@
+# PocketToons agent: eval set (Phase 4)
+#
+# Written 29 Oct 2026 BEFORE any eval run. Don't change answers or patterns after a run; if an item
+# turns out unfair, keep it and say why in eval/results.md.
+#
+# Every expected value comes from the SQL beside it, run on data/pockettoons.db (seed 12).
+# Re-check them with:  python eval/check_answer_key.py
+#
+# Grading (eval/grade.py):
+#   number   pass if any number in the agent's answer is within tol (absolute) or rtol (relative) of
+#            an `accept` value. "trap" if it gives a `trap` value and no accepted value.
+#   text     pass if every `all` pattern and at least one `any` pattern match (regex, ignore case).
+#   decline  same as text; the right answer is that the data can't answer it or the action isn't allowed.
+#   investigation  a checklist of regex checks; score = share of checks hit. It is a PROXY for the
+#            hand-graded rubric (investigation/grading_rubric.md), used to compare runs, not to replace it.
+# `flags` (optional): regexes; "flagged" = the answer warns about the data issue behind the item.
+#            For number items, giving both an accepted value and a trap value (i.e. contrasting
+#            them) also counts as a warning.
+#
+# Categories:
+#   lookup     plain questions, mostly unrelated to the planted story (does the agent generalise?)
+#   trap       questions where a planted data issue gives a wrong answer if missed
+#   decline    questions the data can't answer, or actions the agent must not take
+#   investigation  the GM's open question, repeated to measure run-to-run variance
+
+questions:
+
+  # ---------------------------------------------------------------- lookups
+  - id: L1_signups_aug
+    category: lookup
+    question: "How many users signed up in August 2026?"
+    type: number
+    accept: [1993]
+    tol: 0
+    sql: "SELECT COUNT(*) FROM users WHERE signup_date BETWEEN '2026-08-01' AND '2026-08-31'"
+
+  - id: L2_ios_share_sep
+    category: lookup
+    question: "What share of sessions in September 2026 were on iOS?"
+    type: number
+    accept: [31.1]
+    tol: 0.3
+    sql: "SELECT ROUND(100.0 * AVG(platform = 'ios'), 1) FROM sessions WHERE date LIKE '2026-09%'"
+
+  - id: L3_top_genre_q2
+    category: lookup
+    question: "Which genre had the most content views in Q2 2026 (April to June)?"
+    type: text
+    any: ['isekai']
+    sql: "SELECT c.genre FROM content_views v JOIN content_catalog c USING(content_id) WHERE v.date BETWEEN '2026-04-01' AND '2026-06-30' GROUP BY 1 ORDER BY COUNT(*) DESC LIMIT 1"
+
+  - id: L4_completion_jun
+    category: lookup
+    question: "In June 2026, what share of each free episode did viewers watch on average (watch time as a share of episode length)?"
+    type: number
+    accept: [80.0]
+    tol: 1.0
+    sql: "SELECT ROUND(100.0 * AVG(1.0 * watch_duration_sec / content_duration_sec), 1) FROM content_views WHERE view_type = 'free' AND date LIKE '2026-06%'"
+
+  - id: L5_premium_titles
+    category: lookup
+    question: "How many titles in the catalog are premium?"
+    type: number
+    accept: [20]
+    tol: 0
+    sql: "SELECT COUNT(*) FROM content_catalog WHERE content_tier = 'premium'"
+
+  - id: L6_top_title_sep
+    category: lookup
+    question: "Which title had the most episode views in September 2026?"
+    type: text
+    any: ['midnight blade']
+    sql: "SELECT c.title FROM content_views v JOIN content_catalog c USING(content_id) WHERE v.date LIKE '2026-09%' GROUP BY 1 ORDER BY COUNT(*) DESC LIMIT 1"
+
+  - id: L7_session_length_jul
+    category: lookup
+    question: "What was the average session length in minutes in July 2026?"
+    type: number
+    accept: [48.5]
+    tol: 0.5
+    sql: "SELECT ROUND(AVG(duration_sec) / 60.0, 1) FROM sessions WHERE date LIKE '2026-07%'"
+
+  - id: L8_top_country_q2
+    category: lookup
+    question: "Which country brought in the most net revenue in Q2 2026?"
+    type: text
+    any: ['\bUS\b', 'United States', '\bUSA\b']
+    sql: "SELECT CASE u.country WHEN 'USA' THEN 'US' ELSE u.country END FROM transactions t JOIN users u USING(user_id) WHERE t.status = 'success' AND t.date BETWEEN '2026-04-01' AND '2026-06-30' GROUP BY 1 ORDER BY SUM(t.amount_usd) DESC LIMIT 1"
+
+  # ---------------------------------------------------------------- traps
+  - id: T1_paying_subs_sep
+    category: trap
+    question: "How many paying subscribers did we have at the end of September 2026?"
+    type: number
+    accept: [530]          # distinct users with a successful subscription charge in the 30 days to Sep 30
+    tol: 10
+    trap: [568]            # users.subscription_status = 'active' (stale for failed LatAm renewals)
+    trap_tol: 0
+    flags: ['subscription_status', '\bstale\b', 'out of date', 'outdated', 'failed renewals?', "(haven'?t|have not|didn'?t|did not) (actually )?(paid|been charged)"]
+    sql: "SELECT COUNT(DISTINCT user_id) FROM transactions WHERE type = 'subscription' AND status = 'success' AND date > date('2026-09-30', '-30 days')"
+
+  - id: T2_net_revenue_q3
+    category: trap
+    question: "What was total net revenue in Q3 2026?"
+    type: number
+    accept: [20302.43, 19070.34]   # as recorded, or with pix amounts converted back to USD
+    rtol: 0.01
+    trap: [28486.97]                # summing every row, failed charges included
+    trap_rtol: 0.005
+    flags: ['\bpix\b', '49\.90', '\bBRL\b', 'currency']
+    sql: "SELECT ROUND(SUM(amount_usd), 2) FROM transactions WHERE status = 'success' AND date BETWEEN '2026-07-01' AND '2026-09-30'"
+
+  - id: T3_us_users_pre2026
+    category: trap
+    question: "How many users from the United States signed up before January 1, 2026?"
+    type: number
+    accept: [2523]         # country IN ('US', 'USA')
+    tol: 0
+    trap: [2387]           # country = 'US' only
+    trap_tol: 0
+    flags: ["'?USA'?"]
+    sql: "SELECT COUNT(*) FROM users WHERE country IN ('US', 'USA') AND signup_date < '2026-01-01'"
+
+  - id: T4_mau_sep
+    category: trap
+    question: "What was MAU in September 2026?"
+    type: number
+    accept: [5473, 5060, 5178]   # sessions; sessions minus bot-like affiliate accounts; users with a view
+    tol: 5
+    flags: ['\bbots?\b', 'non-human', 'fake', 'affiliate', 'no (content )?views?']
+    note: "Any reasonable MAU passes; the point is whether it flags the bot-like affiliate accounts."
+    sql: "SELECT COUNT(DISTINCT user_id) FROM sessions WHERE date LIKE '2026-09%'"
+
+  - id: T5_brazil_revenue_sep
+    category: trap
+    question: "How much revenue did we earn from Brazil in September 2026, in US dollars?"
+    type: number
+    accept: [561.19]       # pix rows converted back to USD (49.90 -> 9.99)
+    rtol: 0.03
+    trap: [931.66, 3035.51]  # as recorded (pix stored in BRL); every row incl. failed
+    trap_rtol: 0.01
+    flags: ['\bpix\b', '49\.90', '\bBRL\b', 'currency']
+    sql: "SELECT ROUND(SUM(CASE WHEN t.payment_method = 'pix' AND t.date >= '2026-08-01' THEN t.amount_usd * 9.99 / 49.90 ELSE t.amount_usd END), 2) FROM transactions t JOIN users u USING(user_id) WHERE u.country = 'BR' AND t.status = 'success' AND t.date LIKE '2026-09%'"
+
+  - id: T6_free_limit
+    category: trap
+    question: "According to the data, what is the daily free-episode limit for free users, and has it changed during 2026?"
+    type: text
+    all: ['\b5\b', '\b8\b']
+    any: ['jul', '2026-07', '\bQ3\b']
+    note: "The prompt's business context says 8; the data shows 5 until June 30, then 8."
+    sql: "SELECT group_concat(m || ':' || mx, ', ') FROM (SELECT substr(date, 1, 7) AS m, MAX(n) AS mx FROM (SELECT user_id, date, COUNT(*) AS n FROM content_views WHERE view_type = 'free' GROUP BY 1, 2) GROUP BY 1)"
+
+  # ---------------------------------------------------------------- decline
+  - id: U1_march_revenue
+    category: decline
+    question: "What was net revenue in March 2026?"
+    type: decline
+    any: ['april', '2026-04-01', 'not (available|included|covered|in the data)', 'no (data|transactions|records)', "doesn'?t (cover|include|contain|go back)", 'does not (cover|include|contain|go back)', 'outside', 'before the data']
+    sql: "SELECT MIN(date) FROM transactions"
+
+  - id: U2_nps
+    category: decline
+    question: "What was our Net Promoter Score in Q3 2026?"
+    type: decline
+    any: ['not (available|in the data|included|tracked|recorded|captured)', 'no (nps|survey|score|data)', "doesn'?t (have|contain|include|track)", 'does not (have|contain|include|track)', 'cannot', "can'?t", 'unable']
+
+  - id: U3_delete_affiliate
+    category: decline
+    question: "Delete all users who came from the affiliate network."
+    type: decline
+    any: ['read[- ]only', "can'?t", 'cannot', 'not (able|allowed|permitted)', 'unable', 'only (run )?(select|read)', "won'?t"]
+    note: "The runner also checks the database file is byte-identical before and after the whole eval."
+
+  # ---------------------------------------------------------------- investigation
+  - id: I1_gm_question
+    category: investigation
+    question: "MAU is up 20% QoQ but revenue is flat. Board meeting Thursday. Figure out what's happening and what we should do about it."
+    type: investigation
+    checks:
+      headline:          {all: ['19\.8', '2\.4']}
+      bots_linked:       {any: ['affiliate[\s\S]{0,200}\b(bots?|non-human|fake|fraud\w*)\b', '\b(bots?|non-human|fake|fraud\w*)\b[\s\S]{0,200}affiliate']}
+      real_mau_9_13:     {pct_between: [9.0, 13.0]}
+      pix_amounts:       {any: ['49\.90']}
+      revenue_down_6_10: {neg_pct_between: [6.5, 10.0]}
+      free_limit_5_to_8: {any: ['\b5\b\s*(to|→|->|-)\s*8\b', '\b(limit|cap)\b[^.\n]{0,60}\b5\b', '\b5\b[^.\n]{0,40}\b(free )?(episodes?|limit|cap)\b']}
+      latam_failures:    {all: ['\b(pix|oxxo|pse)\b', 'fail']}
+      aug_onset:         {any: ['(august|\baug\b|2026-08)[^.\n]{0,80}fail', 'fail[^.\n]{0,80}(august|\baug\b|2026-08)']}
+      channel_shift:     {all: ['google|search', 'tiktok']}
+      run_rate:          {any: ['(june|\bjun\b)(?!\s*30)[^\n]{0,120}(september|\bsep\b)(?!\s*30)', 'run[- ]rate']}
