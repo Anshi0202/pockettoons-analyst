@@ -57,3 +57,5 @@
 - Colab notebook (notebooks/pockettoons_colab.ipynb): runs the whole project in a browser.
   Tested cell by cell; fixed dollar amounts being shown as math formulas in Colab output.
 - Repo made public.
+
+- Checked the public repo: added the Colab notebook and the Phase 3 rubric (neither had been committed), corrected the README on when the rubric was committed, and added the earlier control run (07:00) to eval/results.md (0/6 answers invented a limit change).
