@@ -1,0 +1,19 @@
+[ 1] get_schema
+[ 2] sql 1/40: Checks the observed view-type and content-tier combinations by month, including repeat-vie -> 24 rows (3844 ms)
+[ 3] hypotheses: 3 open
+[ 4] sql 2/40: Tests whether free-tier viewing has a monthly ceiling at eight or a shift in the observed  -> 6 rows (1125 ms)
+[ 5] sql 3/40: Pins down the timing of the apparent daily cap change by checking the maximum per-user fre -> 6 rows (859 ms)
+[ 6] hypotheses: 2 supported, 1 rejected
+
+==============================================================================
+## Answer
+The viewing data shows an effective daily free-episode ceiling of **5 episodes from April through June 2026**, rising to **8 episodes from July through September**. So, yes—the observed limit changed during 2026, apparently on **July 1**.
+
+## Definition and scope
+I counted distinct free-tier episodes watched with `view_type = free` per user per day. View data covers **April 1–September 30, 2026**.
+
+## Data quality
+The database records viewing events, not the configured limit or its change history. The observed maximum was 5 on every date in April–June and 8 on every date in July–September; no user-day exceeded its period’s maximum. This supports an effective-limit change, but does not independently confirm the policy setting or its exact implementation date.
+==============================================================================
+model: gpt-6-luna | model calls: 7 | run_sql calls: 3 (0 errors) | tokens: 26,608 in / 2,250 out (921 reasoning) | estimated cost: $0.0038 | wall time: 43 s (model 37 s) | stopped by: model finished
+Trace: C:\Users\HP\pockettoons-analyst\investigation\traces\20261029_063043_according-to-the-data-what-is-the-daily.md

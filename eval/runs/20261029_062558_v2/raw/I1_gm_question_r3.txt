@@ -1,0 +1,113 @@
+[ 1] get_schema
+[ 2] sql 1/40: Establish monthly session-based MAU and engagement over Q2 and Q3 to verify the claimed au -> 6 rows (139 ms)
+[ 3] sql 2/40: Validate transaction types, success versus failure, refunds, and monthly amounts before de -> 30 rows (0 ms)
+[ 4] sql 3/40: Inspect user segment values and snapshot status distribution for potential mix or data-qua -> 100 rows (16 ms)
+[ 5] sql 4/40: Check viewing activity and monetization pathways by month as an independent MAU and produc -> 18 rows (483 ms)
+[ 6] hypotheses: 5 open
+[ 7] sql 5/40: Quantify monthly net successful revenue, subscription and PPV components, unique paying us -> 6 rows (141 ms)
+[ 8] sql 6/40: Check country-code variants and quantify their prevalence before segmenting user growth. -> 9 rows (15 ms)
+[ 9] sql 7/40: Identify whether unusual transaction values or failure patterns are isolated to particular -> 38 rows (0 ms)
+[10] hypotheses: 2 open, 3 supported
+[11] sql 8/40: Locate Q2-to-Q3 MAU growth and monetization deterioration by normalized country, separatin -> 16 rows (312 ms)
+[12] sql 9/40: Test whether the Q3 audience and monetization shift is concentrated by acquisition source  -> 13 rows (265 ms)
+[13] sql 10/40: Measure Q2-to-Q3 monetization among the same pre-Q2 users active in both quarters, isolati -> 2 rows (219 ms)
+[14] sql 11/40: Attribute the monthly-average MAU increase to acquisition sources, especially newly appear -> 7 rows (250 ms)
+[15] sql 12/40: Test whether recent signups from new sources actually engage, and whether MAU growth refle -> 39 rows (952 ms)
+[16] sql 13/40: Trace the unusual Pix transaction values by month and country to distinguish pricing/produ -> 28 rows (0 ms)
+[17] sql 14/40: Check whether acquisition-source audience shifts align with changes in channel spend, clic -> 27 rows (0 ms)
+[18] sql 15/40: Correctly count monthly signups and assess same-month activation, viewing, and payment by  -> 39 rows (1250 ms)
+[19] sql 16/40: Find the countries behind low-converting TikTok and affiliate audience growth and quantify -> 21 rows (62 ms)
+[20] sql 17/40: Quantify the timing and financial importance of the $49.90 Pix subscription records relati -> 12 rows (0 ms)
+[21] sql 18/40: Check whether the September 30 subscription-status snapshot is consistent with successful  -> 3 rows (16 ms)
+[22] sql 19/40: Compare same-month signup-to-view and signup-to-paid conversion across Q2 and Q3 to detect -> 6 rows (141 ms)
+[23] sql 20/40: Separate retention-like loss of previously paying incumbent users from new conversion, usi -> 4 rows (203 ms)
+[24] sql 21/40: Check whether the latest-subscription snapshot indicates a Q3 rise in cancellations that c -> 12 rows (0 ms)
+[25] sql 22/40: Sanity-check monthly revenue components and provide exact data for the Q2/Q3 headline and  -> 6 rows (139 ms)
+[26] sql 23/40: Compute exact quarterly monthly averages, revenue yield, excluded failed-attempt value, an -> 2 rows (141 ms)
+[27] sql 24/40: Verify total quarterly revenue and monthly-average MAU, payer conversion and revenue yield -> 2 rows (157 ms)
+[28] sql 25/40: Separate new-user source mix from within-source signup-to-view and signup-to-paid conversi -> 13 rows (139 ms)
+[29] sql 26/40: Quantify how acquisition spend shifted between Q2 and Q3 for channels whose MAU and payer  -> 9 rows (0 ms)
+[30] sql 27/40: Get exact counts of successful $49.90 Pix subscription payments and matching refunds for a -> 1 rows (16 ms)
+[31] sql 28/40: Correct payer conversion to count successful purchasers only when they are also session-ac -> 6 rows (203 ms)
+[32] sql 29/40: Audit the stated eight-free-episodes-per-day limit against observed free episode-view even -> 6 rows (703 ms)
+[33] sql 30/40: Check whether a platform mix shift explains the Q3 increase in low-monetizing activity or  -> 18 rows (203 ms)
+[34] sql 31/40: Compare free, subscription, and PPV viewing volume and completion through Q2/Q3 to disting -> 18 rows (608 ms)
+[35] sql 32/40: Test whether platform mix or within-platform payer conversion explains the expanding but l -> 6 rows (1296 ms)
+[36] hypotheses: 4 supported, 3 rejected
+[37] sql 33/40: Cross-check quarterly payer/revenue averages, subscription and PPV volumes, Pix sensitivit -> ERROR no such column: SUMMARY (0 ms)
+[38] sql 34/40: Cross-check quarterly payer/revenue averages, subscription and PPV volumes, Pix sensitivit -> 2 rows (1625 ms)
+[39] sql 35/40: Quantify exposure to the eight-free-episode daily cap, so any paywall-at-cap recommendatio -> 6 rows (562 ms)
+[40] sql 36/40: Check whether the July shift from at most five to eight free episode views per user-day co -> 18 rows (0 ms)
+[41] sql 37/40: Inspect the monthly distribution of free episodes consumed per user-day to test whether th -> 39 rows (750 ms)
+[42] sql 38/40: Test for a behavior change among the same incumbent users by comparing daily free-view int -> 2 rows (1187 ms)
+[43] sql 39/40: Quantify Q2-to-Q3 free-view growth above a five-episode threshold alongside paid-view volu -> 2 rows (1171 ms)
+[44] hypotheses: 1 open, 3 supported, 3 rejected, 1 inconclusive
+
+==============================================================================
+## Answer
+
+Q3 MAU growth is real, but it brought much less paying activity: average monthly MAU rose **19.8%**, from **4,449 to 5,328**, while net successful transaction revenue averaged **$6,932 to $6,767 per month** (**-2.4%**). Active-payer conversion fell **20.4% to 14.4%**. At Q2 revenue per MAU, the extra audience would have added about **$1,370/month**; lower revenue per MAU took away about **$1,534/month**, leaving revenue slightly down.
+
+There are two important leads to take to the board: Q3 audience growth was concentrated in low-paying acquisition sources, and free viewing shifted from a maximum of five episodes per user-day in Q2 to eight in Q3. The latter is consistent with a higher effective free allowance, but the database has no product-change log to confirm it.
+
+## Definition and scope
+
+- **Dates:** Q2 is April–June 2026; Q3 is July–September 2026, the latest full quarter in the data.
+- **MAU:** monthly distinct users with at least one session; quarter figures are the average of the three monthly counts.
+- **Net revenue:** successful transaction amounts summed, including negative refunds; failed attempts excluded. This is transaction revenue, not an accounting-recognized revenue or margin measure.
+- **Active-payer conversion:** successful subscription or PPV payers who also had a session in that month, divided by that month’s session MAU.
+- **Revenue comparison:** Q2 net transaction revenue was **$20,795** for the quarter, versus **$20,302** in Q3.
+
+## Data quality
+
+- **Pix pricing needs reconciliation.** Q2 subscription transactions were at **$9.99**, but Q3 includes **29 successful Pix subscription transactions at $49.90** and **two $49.90 Pix refunds**. The data has no plan-term or SKU field, so these could be valid multi-month purchases. If they should instead be treated as one month at $9.99, Q3 revenue would be about **$6,408/month**, rather than $6,767—**7.5% below Q2**, not 2.4%.
+- **Failed attempts are not revenue.** Failed transaction rows rose from **175 in Q2 to 422 in Q3**; subscription failures averaged about **40/month to 110/month**. There were **113 failed $49.90 Pix subscription attempts** in August–September. These warrant investigation, but do not count as earned or lost revenue without retry and payment-outcome data.
+- **Refunds do not explain the flat result:** they averaged **-$160/month in Q2 and -$163/month in Q3**.
+- **The free-view limit has a notable data signal.** No free-view user-day exceeded five episodes in Q2; Q3 included **11,693 user-days above five**, of which **6,319 reached eight**. The business brief says the limit is eight, but the data cannot establish when or why the effective threshold changed. Free catalog releases also increased in July.
+- The user subscription status is a **September 30 snapshot**, and transaction history begins in April; I did not use that snapshot as a monthly churn measure. The country code `USA` appears for **136 users** and was combined with `US` for country comparisons. There are no device, fraud, or test-account flags to rule out nonhuman or misattributed traffic.
+
+## Findings
+
+1. **The revenue problem is yield, not a lack of audience.** Average monthly revenue per MAU fell from **$1.56 to $1.27**. Holding Q2 yield constant, Q3’s additional **879 MAU** would imply about **+$1,370/month**; the lower yield among Q3 MAU implies about **-$1,534/month**. These two effects reconcile to the observed **-$164/month**. The run-rate worsened: September had **5,473 MAU** but only **$5,912 net revenue**, **12.6% below Q3’s monthly average**; September active-payer conversion was **12.53%**.
+
+2. **A large share of audience growth came from sources with very low observed payment yield.** Source-level monthly-average MAU changes were approximately **+495 affiliate network**, **+290 TikTok**, and **+266 organic**, offset by **-236 Google Search** and **-82 Meta Ads**. Affiliate and TikTok together account for about **89% of the net source-level MAU increase**.
+   - In Q3, affiliate had **1,402 quarter-active users**, **two payers**, and **$19.98** in attributed transaction revenue. Of **1,442 affiliate signups**, **612 viewed content in their signup month** and **one paid**.
+   - TikTok’s source-level payer rate fell from **3.5% in Q2 to 1.5% in Q3**. Its same-month signup-to-paid rate fell from **1.52% to 0.45%**.
+   - Spend shifted in the same period: quarterly TikTok spend rose from **$1,127 to $2,707**, while Google Search spend fell from **$5,008 to $883**. These figures are consistent with the channel shift contributing to lower yield, but source attribution is not an incrementality test.
+
+3. **This is not only a new-user mix problem.** Among **1,757 pre-Q2 users active in both quarters**, payer conversion fell from **51.17% to 37.45%**. Of the **899** who paid in Q2, **363 did not pay in Q3**; **122** Q2 non-payers paid in Q3. Conversion also fell within each platform: Android **20.81% to 13.37%**, iOS **26.76% to 22.44%**, and web **29.60% to 23.43%**. The comparable-user decline points to weaker monetization among returning users as well as acquisition mix.
+
+4. **Free viewing expanded sharply, with a likely but unverified change in effective access.** Q2 free-view days peaked at five episodes, and about **26%** were exactly five. In Q3, **11,693 user-days** exceeded five and **6,319** reached eight; that represents **26,568 free episodes above a five-per-day threshold** across the quarter. Among users active in both periods, free views per free-view user-day rose from **2.86 to 3.34**. This is consistent with an allowance change or increased free-content availability; it does not prove either caused the monetization decline. As a timing check, free catalog additions rose from **48 episodes in June to 109 in July**.
+
+5. **Paid products weakened, while Pix amounts make subscription revenue look healthier than payer counts.** Average monthly PPV revenue fell **35%**, from **$691 to $451**, and successful PPV transactions averaged **321 to 188 per month**. Average monthly subscription payers fell from **635 to 598**, even though reported subscription revenue averaged **$6,400 to $6,480**; the $49.90 Pix transactions help explain that divergence. The Pix normalization above is a sensitivity, not a correction until the plan terms are confirmed.
+
+The volume/yield decomposition is the headline impact estimate. The acquisition, free-view, subscription, and PPV findings are explanations of that yield change and **should not be added together as separate dollar losses**.
+
+## Hypotheses rejected
+
+- **Refunds caused the revenue result:** rejected. Average refunds changed by only about **$3/month** between quarters.
+- **The deterioration is only acquisition mix:** rejected. Payer conversion fell within the same incumbent users and within each platform.
+- **Platform mix alone explains the change:** rejected. Conversion fell on Android, iOS, and web.
+- **Failed transaction amounts explain earned revenue:** rejected. Failed attempts are logged separately and excluded from the revenue definition; their growth is a payment-quality signal, not revenue.
+
+## Recommendations
+
+1. **Run a monetization recovery test across new and returning users.** Test onboarding, premium previews, and renewal/save messaging; measure active-payer conversion and net revenue per active user. Restoring Q2’s **20.4%** active-payer rate on Q3’s MAU, at Q3’s observed revenue per active payer, implies roughly **321 additional monthly payers** and **$2,850/month**. Treat this as an upside scenario, not a forecast; it overlaps with the channel and free-limit drivers.
+
+2. **Verify the free-limit and catalog changes, then test the cap.** Confirm the July configuration and release history. A controlled five-versus-eight episode test should measure paid conversion, net revenue per user, viewing, and retention—not just MAU. The observed Q3 scale was **26,568 free views above five per day**, but the revenue effect cannot be inferred from the logs alone.
+
+3. **Cap affiliate expansion and make TikTok spend conditional on paid quality.** Affiliate cost **$360.50 in Q3**, or about **$120/month**, for two observed payers and $19.98 in attributed revenue; pausing it would save up to that monthly spend while risking roughly **495 monthly-average MAU**. Use a holdout and validate installs, viewing, and 30/60-day payment before scaling. Test any redirected budget against Google Search or referral rather than assuming attributed revenue proves incrementality.
+
+4. **Reconcile Pix price, plan term, refunds, and failures before presenting revenue as settled.** Confirm whether $49.90 is a valid multi-month subscription. If it is not, the Q3 transaction-revenue sensitivity is about **$1,078 for the quarter**. Separately track Pix attempts, unique users, retry outcomes, successful payments, and refunds; do not count failed-attempt value as revenue.
+
+5. **Test a PPV discovery improvement for engaged free viewers.** A return to Q2’s average PPV revenue would represent about **+$240/month** versus Q3. Track PPV purchase conversion and net revenue per exposed viewer; this opportunity overlaps with the overall payer-conversion recovery estimate.
+
+## Confidence and open questions
+
+- **High confidence:** Q2-to-Q3 MAU, transaction-revenue, and active-payer trends; the decline in conversion among comparable users; and the observed free-view threshold pattern.
+- **Medium confidence:** Low-yield acquisition mix and weaker returning-user monetization are material contributors. The data is descriptive and does not establish marketing or product causality.
+- **Open:** Was the effective free allowance raised in July, or did catalog availability or event logging change? Is Pix $49.90 a valid multi-month plan? How many failed Pix rows are unique customers versus retries?
+- **Open:** The event data covers April–September only and lacks test/fraud flags, payment decline reasons, product configuration history, and plan-term metadata. Those are needed to attribute causes and forecast revenue more confidently.
+==============================================================================
+model: gpt-6-luna | model calls: 25 | run_sql calls: 39 (1 errors) | tokens: 702,643 in / 42,621 out (27,457 reasoning) | estimated cost: $0.0916 | wall time: 475 s (model 461 s) | stopped by: model finished
+Trace: C:\Users\HP\pockettoons-analyst\investigation\traces\20261029_064714_mau-is-up-20-qoq-but-revenue-is-flat-boa.md

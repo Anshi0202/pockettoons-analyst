@@ -1,0 +1,12 @@
+[ 1] get_schema
+[ 2] sql 1/40: Compute September 2026 session counts by platform and the iOS share of all sessions. -> 3 rows (30 ms)
+
+==============================================================================
+## Answer
+**31.1% of sessions in September 2026 were on iOS** (12,526 of 40,252 sessions).
+
+## Definition and scope
+Share = sessions on iOS divided by all sessions dated September 1–30, 2026. Each session record counts once.
+==============================================================================
+model: gpt-6-luna | model calls: 3 | run_sql calls: 1 (0 errors) | tokens: 6,665 in / 175 out (0 reasoning) | estimated cost: $0.0008 | wall time: 7 s (model 7 s) | stopped by: model finished
+Trace: C:\Users\HP\pockettoons-analyst\investigation\traces\20261029_062613_what-share-of-sessions-in-september-2026.md

@@ -1,0 +1,108 @@
+[ 1] get_schema
+[ 2] sql 1/40: Establish monthly activity and transaction trends across the available six-month period, w -> 6 rows (21593 ms)
+[ 3] sql 2/40: Correctly calculate monthly MAU, viewers and net sales from separately aggregated event ta -> 6 rows (530 ms)
+[ 4] sql 3/40: Inspect category values and variants in the main activity, payment and user dimensions bef -> 35 rows (172 ms)
+[ 5] hypotheses: 4 open, 1 supported
+[ 6] sql 4/40: Separate successful sales from failed attempts and refunds by month and product, and measu -> 30 rows (16 ms)
+[ 7] sql 5/40: Measure monthly payer conversion and revenue per active user/payer to determine if monetiz -> 6 rows (328 ms)
+[ 8] sql 6/40: Compare Q2 and Q3 using the standard average monthly active users, quarterly net transacti -> 2 rows (266 ms)
+[ 9] sql 7/40: Identify discrete transaction price changes and unusually large successful charges that co -> 51 rows (32 ms)
+[10] sql 8/40: Re-measure monetization among users who signed up before the observation period, testing w -> 2 rows (203 ms)
+[11] sql 9/40: Locate the user growth and monetization change by country, including the USA/US code varia -> 18 rows (389 ms)
+[12] sql 10/40: Compare average monthly active users, payer rate and revenue by country across quarters af -> 8 rows (390 ms)
+[13] sql 11/40: Test whether growth and declining payer conversion are concentrated in acquisition sources -> 7 rows (344 ms)
+[14] sql 12/40: Compare payer behavior on the exact same users active in both quarters to isolate within-u -> 2 rows (406 ms)
+[15] sql 13/40: Check whether acquisition spend or channel mix shifted alongside MAU growth, especially fo -> 27 rows (0 ms)
+[16] sql 14/40: Assess whether affiliate and other sources generate genuine engaged viewing or merely low- -> 7 rows (1265 ms)
+[17] sql 15/40: Check for signup surges and status/country anomalies by source that could account for the  -> 75 rows (31 ms)
+[18] hypotheses: 4 supported, 1 rejected
+[19] sql 16/40: Quantify the acquisition-spend reallocation from Q2 to Q3 and relate it to the source mix  -> 9 rows (0 ms)
+[20] sql 17/40: Measure failed transaction rates and quantify the contribution of charges above the stated -> 2 rows (16 ms)
+[21] sql 18/40: Check monthly content-view type mix and engagement to see whether new activity translates  -> 18 rows (1296 ms)
+[22] sql 19/40: Sanity-check the MAU definition against actual viewers and connect the latest engagement a -> 6 rows (968 ms)
+[23] sql 20/40: Determine whether new high-priced subscription offers and increased failed transactions ar -> 100 rows (16 ms)
+[24] sql 21/40: Build a conservative constant-price revenue comparison, subtracting only Q3 transaction am -> 2 rows (15 ms)
+[25] sql 22/40: Calculate consistent quarter-averaged activity, viewer, payer-month conversion and revenue -> 2 rows (609 ms)
+[26] sql 23/40: Check whether post-July nonstandard amounts are localized to a country/payment method, whi -> 7 rows (0 ms)
+[27] sql 24/40: Calculate revenue and revenue per active user-month after removing only the Q3 amounts abo -> 2 rows (312 ms)
+[28] sql 25/40: Show the month-by-month trajectory and compare September's run rate with its quarter avera -> 6 rows (202 ms)
+[29] sql 26/40: Correct the price-normalized revenue calculation for the nonstandard $49.90 refund as well -> 2 rows (16 ms)
+[30] sql 27/40: Test how the growth sources overlap with lower-converting geographies so country and acqui -> 9 rows (969 ms)
+[31] sql 28/40: Locate the sharp increase in failed payment attempts by payment method, while distinguishi -> 16 rows (0 ms)
+[32] sql 29/40: Profile the geography and actual viewing/payment engagement of Q3 affiliate-attributed use -> 3 rows (719 ms)
+[33] sql 30/40: Quantify view engagement, payer user-month conversion and the exact active-user-month cont -> 2 rows (828 ms)
+[34] sql 31/40: Recalculate the quarterly payer conversion trend after removing the affiliate source to se -> 2 rows (296 ms)
+[35] sql 32/40: Estimate the incremental quarterly revenue associated with recovering Q2 payer conversion  -> ERROR no such column: date (0 ms)
+[36] sql 33/40: Compute price-normalized revenue per active user-month and payer-month, providing the unit -> ERROR no such column: date (0 ms)
+[37] sql 34/40: Compute price-normalized revenue per active user-month and payer-month, providing the unit -> 2 rows (546 ms)
+[38] sql 35/40: Precisely estimate how the affiliate source affects MAU growth and aggregate payer convers -> 2 rows (859 ms)
+[39] sql 36/40: Validate the stated eight-free-episodes-per-day rule over time using distinct user/content -> 6 rows (875 ms)
+[40] sql 37/40: Validate that observed free/subscription/PPV view types map to the catalog's free/premium  -> 24 rows (983 ms)
+[41] sql 38/40: Show the constant-price monthly revenue trajectory, especially whether September's run rat -> 6 rows (187 ms)
+[42] sql 39/40: Quantify the combined Indonesia/Philippines/Vietnam shift in average MAU and payer convers -> 4 rows (390 ms)
+[43] sql 40/40: Finalize exact quarter-over-quarter MAU, affiliate contribution, payer conversion, constan -> 1 rows (405 ms)
+   query budget used up; asking for the final answer
+
+==============================================================================
+## Answer
+
+Using average monthly session-based MAU, Q3 2026 (July–September) was up **17.5%** from Q2 (April–June), not quite 20%. Recorded net transaction revenue was **up 16.8%**, not flat; however, after adjusting Q3 charges above the established price points, revenue growth is only **6.5%** and revenue per active-user month is down **9.3%**. The gap is mainly a mix of low-converting new activity and unusual Brazil/Pix charges—not evidence that existing users broadly stopped paying.
+
+## Definition and scope
+
+- Compared **Q2: April 1–June 30, 2026** with **Q3: July 1–September 30, 2026**, the latest full quarter in the data.
+- **MAU:** distinct users with at least one session in a month; compared the average of the three monthly counts. That average was **4,519 in Q2** and **5,308 in Q3**.
+- **Net revenue:** successful transaction amounts, including negative refunds; failed attempts are excluded. Transactions totalled **$20,940.73 in Q2** and **$24,460.30 in Q3**.
+- **Payer user-month rate:** active user-months with at least one successful subscription or PPV transaction, divided by all active user-months.
+- For the price-adjusted comparison, I treated **$9.99** as the subscription reference price and **$2.99** as the highest PPV price observed through Q2. I also adjusted the one Q3 refund above the usual $9.99 refund amount. This is a sensitivity analysis, not a confirmed correction to accounting.
+
+## Data quality
+
+- **Brazil/Pix price anomaly:** From August, the nonstandard subscription and PPV amounts—including $49.90, $9.90 and $14.90—appear only on Brazil Pix transactions. The $49.90 subscription amount is inconsistent with the brief’s $9.99 monthly price, but could reflect a valid localized offer or a currency/configuration issue; the data alone cannot settle that.
+- Under the reference-price adjustment, Q3 revenue falls by **$2,157.88**, from $24,460.30 to **$22,302.42**. That changes apparent Q/Q revenue growth from **16.8% to 6.5%**. Treat the adjusted figure as provisional until the offer and currency treatment are verified.
+- Failed attempts are not revenue. The overall transaction failure rate rose from **5.9% in Q2 to 13.0% in Q3**, while successful transaction rows were nearly unchanged (**2,931 to 2,932**). Pix’s failure rate rose from **11.2% to 54.6%**; the Q3 Pix records include **118 failed $49.90 subscription attempts**. The nominal amount on those failed attempts is not recognized revenue.
+- Session MAU overstates viewing activity relative to Q2: average monthly **viewer MAU** rose **11.3%**, from 4,519 to 5,031, versus 17.5% for session MAU. Logged free viewing averaged **2.75–2.84 distinct episodes per viewer-day**, with a maximum of five in any month and no observed user-day above the stated eight-episode limit.
+- Affiliate-attributed activity looks low-engagement, but there is no explicit test-account or fraud flag, so I cannot label it fraudulent. I also checked that logged view types align with the catalog tiers.
+
+## Findings
+
+1. **Q3 revenue rose, but reported revenue overstates the underlying growth if the nonstandard Brazil/Pix amounts are not valid USD prices.**  
+   Raw revenue increased **$3,519.57** Q/Q. The reference-price adjustment reduces Q3 net revenue by **$2,157.88**, leaving adjusted growth of **$1,361.69, or 6.5%**. On that basis, revenue per active-user month fell from **$1.54 to $1.40**. September’s adjusted revenue was **$7,194.81**, down from June’s **$7,657.35**, even as session MAU rose from 4,682 to 5,401. So the “flat” description is not right for raw quarterly totals, but is closer to the underlying late-quarter run rate.
+
+2. **Much of the MAU increase came from low-converting affiliate activity.**  
+   Affiliate contributed **1,508 Q3 active user-months**, or about **503 average MAU**—**63.7% of the measured increase** over Q2. Those users generated **two payer user-months** and **$4.98** in Q3 revenue; **815 of 1,409** affiliate-attributed active users viewed content. Excluding affiliate, Q3 average MAU would be **4,805**, up **6.3%** from Q2 rather than 17.5%.
+
+3. **The overall payer-rate decline is mainly a mix issue, concentrated in Southeast Asia and new low-converting sources.**  
+   Payer user-month rate fell from **20.1% to 17.4%**. Excluding affiliate, Q3’s rate was **19.2%**, only **0.9 percentage points** below Q2. Indonesia, the Philippines and Vietnam together contributed about **92% of average MAU growth**; their average MAU rose from **1,022 to 1,751**, while their payer rate fell from **9.6% to 5.9%**. Outside those three countries, the rate was essentially flat (**23.1% to 23.1%**). These country and source effects overlap and should not be added together.
+
+4. **The available evidence does not show a broad monetization drop among users active in both quarters.**  
+   Among the same **3,467** users active in both periods, payer rate rose from **35.9% to 37.4%**. This points more toward the changing mix of active users than worsening behavior among that continuing group.
+
+5. **PPV did not share in the reported revenue increase, and payment reliability worsened.**  
+   Q3 subscription gross sales were **$23,054**, versus **$19,461** in Q2, but included the nonstandard prices above. PPV gross sales fell from **$2,000 to $1,816**. Failed transaction attempts rose from **182 to 436**. The price anomalies and payment failures warrant an immediate billing investigation before treating the recorded revenue trend as durable.
+
+## Hypotheses rejected
+
+- **“Existing users broadly stopped paying.”** Rejected: within the same users active in both quarters, payer rate increased from 35.9% to 37.4%. This does not rule out issues in specific cohorts or payment methods.
+- **“Revenue was flat for the quarter.”** Rejected under the stated net-transaction definition: recorded Q3 revenue was 16.8% higher than Q2. The interpretation changes materially if nonstandard Brazil/Pix amounts are not valid USD revenue.
+
+## Recommendations
+
+1. **Reconcile Brazil/Pix pricing, currency and billing immediately.** Confirm whether the $49.90 subscription and $9.90/$14.90 PPV charges are valid localized prices or incorrectly represented USD amounts; review the **118 failed $49.90 attempts** at the same time. The measured reporting exposure is **$2,157.88** versus the reference-price calculation, not a guaranteed recoverable amount. Track verified USD revenue, refunds and Pix success rate after the fix.
+
+2. **Hold or tightly cap affiliate spend until it produces real viewing and paying users.** Q3 spend was **$360.50**, for about **503 average MAU** but only two payer user-months and $4.98 in revenue. A pause would reduce reported MAU by about 503 on the Q3 run rate, while avoiding that level of quarterly spend if repeated. Resume only against agreed view, retention and paid-conversion thresholds; do not treat the MAU drop from pausing it as lost high-quality growth.
+
+3. **Run a paid-conversion experiment with non-affiliate users, prioritizing localized offers and payment paths in Indonesia, the Philippines and Vietnam.** Restoring the non-affiliate payer user-month rate to Q2’s 20.1% on Q3’s non-affiliate active base implies roughly **$1,008 per quarter** in additional adjusted revenue, using Q3 adjusted revenue per payer-month. This is an illustrative opportunity, not a forecast; test it against a control group and measure incremental paid conversion and net revenue.
+
+4. **Reallocate acquisition budget through controlled tests, not attribution alone.** Q3 TikTok spend was **$2,706.60** and its observed payer user-month rate was **1.7%**; Google Search’s was **35.6%**. Test shifting a limited tranche toward higher-converting sources such as Google Search or referral, and judge it on incremental paying users and cost per payer. Source-attributed revenue is not campaign-level return, so the data does not support a precise ROI forecast.
+
+## Confidence and open questions
+
+- **High confidence:** Raw Q2/Q3 MAU and transaction totals, payer user-month rates, and the increase in failed transaction attempts, based on the recorded event data and stated definitions.
+- **Medium confidence:** The explanation that acquisition mix accounts for much of the payer-rate decline. The patterns support it, and continuing users do not show a decline, but the data is observational.
+- **Medium confidence:** The Brazil/Pix amounts are anomalous relative to the stated subscription price and earlier observed charges. **Open question:** are they valid local pricing, a multi-month offer, or a currency/configuration issue? Finance or payment-processor records are needed to decide.
+- **Low confidence on campaign ROI:** There is no campaign-level conversion or incrementality evidence here, so source-attributed revenue should not be treated as spend return.
+- I could not check performance before April 2026, post-September retention, explicit test/fraud labels, or whether failed payments were later recovered. Those could change the interpretation of sustainable growth and channel quality.
+==============================================================================
+model: gpt-6-luna | model calls: 22 | run_sql calls: 40 (2 errors) | tokens: 517,415 in / 37,060 out (20,837 reasoning) | estimated cost: $0.0703 | wall time: 361 s (model 325 s) | stopped by: query budget
+Trace: C:\Users\HP\pockettoons-analyst\investigation\traces\20261029_121829_mau-is-up-20-qoq-but-revenue-is-flat-boa.md

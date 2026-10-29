@@ -1,0 +1,116 @@
+[ 1] get_schema
+[ 2] sql 1/40: Establish monthly session-based MAU and successful transaction revenue components across t -> 6 rows (187 ms)
+[ 3] hypotheses: 5 open
+[ 4] sql 2/40: Quantify Q2-to-Q3 changes in monthly MAU, net successful revenue, payer conversion, revenu -> 2 rows (172 ms)
+[ 5] sql 3/40: Check transaction type, status, payment-method variants, and monthly failed versus success -> 100 rows (0 ms)
+[ 6] sql 4/40: Inspect country, acquisition-source, and subscription-status value variants and user count -> 100 rows (16 ms)
+[ 7] sql 5/40: Summarize monthly successful and failed attempts by revenue product, including amount rang -> 30 rows (15 ms)
+[ 8] sql 6/40: Check country code variants and their scale so country-level MAU/revenue comparisons do no -> 9 rows (31 ms)
+[ 9] sql 7/40: Check acquisition source variants and identify any source newly introduced during the obse -> 7 rows (16 ms)
+[10] sql 8/40: Validate platform values and check whether a platform-specific logging change could inflat -> 3 rows (171 ms)
+[11] hypotheses: 2 open, 3 supported
+[12] sql 9/40: Measure the monthly price points and transaction counts for subscriptions and PPV, checkin -> 44 rows (32 ms)
+[13] sql 10/40: Identify which payment methods account for the Q3 increase in failed attempts and determin -> 16 rows (0 ms)
+[14] sql 11/40: Decompose quarterly MAU and revenue changes by acquisition source, especially to quantify  -> 13 rows (312 ms)
+[15] sql 12/40: Decompose MAU and revenue by normalized country to find whether growth is a geographic mix -> 16 rows (280 ms)
+[16] sql 13/40: Re-measure MAU, payer conversion, and monetization within the fixed cohort of users who si -> 2 rows (187 ms)
+[17] sql 14/40: Compare Q3 engagement and monetization quality by acquisition source to test whether affil -> 7 rows (375 ms)
+[18] sql 15/40: Quantify the share of quarterly transaction revenue represented by the new $49.90 subscrip -> 21 rows (0 ms)
+[19] sql 16/40: Measure monthly active usage and revenue specifically from users who signed up in Q3, incl -> 3 rows (30 ms)
+[20] sql 17/40: Assess whether failed payments in high-failure methods are unique lost customers or repeat -> 16 rows (156 ms)
+[21] sql 18/40: Cross-check session-based MAU trends against distinct content viewers to see whether MAU g -> 6 rows (546 ms)
+[22] sql 19/40: Compare quarter monetization among the same users active at least once in both Q2 and Q3,  -> 2 rows (562 ms)
+[23] sql 20/40: Check monthly spend and channel coverage, especially affiliate acquisition investment, to  -> 27 rows (0 ms)
+[24] sql 21/40: Track monthly source-specific MAU and actual viewers to determine how much of reported act -> 39 rows (1562 ms)
+[25] sql 22/40: Compute weighted payer conversion rates and exact source-level user-month contributions fo -> 13 rows (375 ms)
+[26] sql 23/40: Locate Q3 payment failure growth by country and method, testing whether local payment rail -> 61 rows (16 ms)
+[27] sql 24/40: Compare paid marketing allocation and click-through measures by channel between Q2 and Q3, -> 9 rows (0 ms)
+[28] sql 25/40: Quantify signup volume by acquisition source and cohort, especially the new affiliate chan -> 13 rows (30 ms)
+[29] sql 26/40: Investigate whether new high-price subscription and PPV transactions or failures are conce -> 100 rows (0 ms)
+[30] sql 27/40: Verify where the anomalous $49.90 subscription, $9.90/$14.90 PPV, and matching refund pric -> 7 rows (14 ms)
+[31] sql 28/40: Quantify raw monthly revenue and a clearly labeled sensitivity excluding newly observed hi -> 6 rows (0 ms)
+[32] sql 29/40: Break down failed local payment attempts by transaction type to distinguish subscription c -> 17 rows (16 ms)
+[33] hypotheses: 5 supported, 1 rejected
+
+==============================================================================
+## Answer
+
+The data does **not** show flat revenue QoQ: from Q2 to Q3 2026, session-based MAU rose **17.4%** and successful net transaction revenue rose **16.8%**. But the latest month is much flatter—September revenue was only **4.2%** above June while MAU was **15.4%** higher—and Q3 revenue includes **$2,718** from new Brazil/Pix price points whose currency and product meaning cannot be verified. At the same time, more of the audience came from very low-converting sources, and payment failures rose sharply on local payment methods.
+
+## Definition and scope
+
+- The database covers **April 1–September 30, 2026**. I compared Q2 (**Apr–Jun**) with Q3 (**Jul–Sep**), the two complete quarters available.
+- MAU is distinct users with at least one recorded session in a calendar month; quarterly MAU is the average of the three monthly counts. On that definition, MAU averaged **4,519** in Q2 and **5,308** in Q3. The stated **20%** increase is not reproduced by this data.
+- Revenue is **successful transaction amounts in `amount_usd`, including negative refunds and excluding failed attempts**. This is a transaction-receipts measure, not necessarily accounting-recognized subscription revenue.
+- As an engagement cross-check, distinct monthly viewers averaged **4,519** in Q2 and **5,031** in Q3 (**+11.3%**). The Q3 MAU lift is therefore not just a session-logging change, though not all session-active users watched content.
+
+## Data quality
+
+- The transaction data matches the brief’s **$9.99 subscription** price through July, but from August includes **$49.90 subscriptions** and **$9.90/$14.90 PPV**. The observed high-price transactions—and a **-$49.90 refund**—are all on **Brazil’s Pix** rail. The database has no currency, SKU, or plan-duration field, so these could be legitimate local offers or misreported local-currency amounts.
+- **Sensitivity, not a correction:** excluding those new price points and the matching refund reduces Q3 transaction revenue from **$24,460** to **$21,742**. That changes apparent Q3 growth from **+16.8% to +3.8%** versus Q2. The price points contribute **$2,718 net**, or about **77%** of the raw Q2-to-Q3 revenue increase; validate them before presenting raw revenue as comparable.
+- Failed transactions are attempts, not revenue. Failed amounts can include repeated attempts, so they should **not** be counted as lost revenue. Refunds are successful transactions with negative amounts and were netted in the figures.
+- I normalized the **US/USA** country-code variant for country comparisons; the variant affects **134** user records and not total MAU. The subscription-status field is only a September 30 snapshot, so I used transaction events for historical payment behavior.
+- There is no test-user flag, transaction currency/SKU metadata, or install-level attribution. Affiliate impressions are also missing, so its click-through rate cannot be calculated.
+
+## Findings
+
+1. **Quarterly totals rose together, but the September run-rate is nearly flat.**
+
+   | Month | Session MAU | Net successful transaction revenue |
+   |---|---:|---:|
+   | Apr | 4,293 | $6,042 |
+   | May | 4,582 | $7,241 |
+   | Jun | 4,682 | $7,657 |
+   | Jul | 5,166 | $7,700 |
+   | Aug | 5,356 | $8,780 |
+   | Sep | 5,401 | $7,980 |
+
+   Q2-to-Q3 average monthly revenue rose from **$6,980 to $8,153** (**+$1,173/month**), close to MAU growth. But from June to September, MAU grew **15.4%** while revenue grew **4.2%**; September revenue was also **2.1% below** the Q3 monthly average. The August revenue spike coincides with the new high-price transactions.
+
+2. **More low-converting acquisition sources diluted overall payer conversion; this is not evidence that the established audience stopped monetizing.**
+
+   Weighted payer conversion fell from **20.1%** to **17.4%**, while average monthly revenue per MAU was essentially unchanged at **$1.54**. Q3’s new affiliate source contributed **1,508 active user-months** but only **2 payer-months** and **$4.98** in Q3 transaction revenue. Of **1,409** distinct affiliate users active in Q3, **594** watched content; **831** affiliate user-months had sessions but no views.
+
+   Affiliate added about **503** average monthly MAU and TikTok about **273** versus Q2—nearly all the net MAU increase together. TikTok’s Q3 weighted payer rate was **1.7%**, versus **35.6%** for Google Search. These source and country shifts overlap and should not be added together as separate effects.
+
+   Among the **same users active in both quarters**, weighted payer conversion rose from **26.7% to 27.6%**, and revenue per active user-month rose from **$2.12 to $2.51**. That stable-audience result does not support a broad deterioration in existing-user monetization.
+
+3. **The new Brazil/Pix price points materially affect the reported revenue trend.**
+
+   Q3 had **52 successful $49.90 subscription transactions** from **37 users** ($2,595), **17 successful high-price PPV transactions** ($173), and one **-$49.90 refund**. Together those add **$2,718 net** to Q3 receipts. If these are not valid USD amounts or comparable revenue, Q3 growth is only **3.8%**, not **16.8%**. The records alone cannot determine which interpretation is right.
+
+4. **Payment failures became a material collection risk, particularly on local rails.**
+
+   Failed subscription/PPV attempts rose from **182 of 3,061 (5.9%)** in Q2 to **436 of 3,331 (13.1%)** in Q3. Pix, Oxxo, and PSE accounted for **279** Q3 failures. Pix alone rose from **26** failures in Q2 to **168** in Q3; its failure rate went from **11.4% to 54.7%** of purchase attempts. Oxxo went from **7.6% to 50.3%**, and PSE from **6.1% to 51.4%**.
+
+   Q3 includes **118 failed $49.90 subscription attempts across 48 users**, all on Brazil/Pix. These are repeated attempts in some cases; they are a collection warning, not a dollar estimate of lost revenue.
+
+5. **Acquisition investment shifted toward sources with weaker observed monetization.**
+
+   Q2-to-Q3 marketing spend fell from **$10,173 to $6,842**, while Google Search spend fell from **$5,008 to $883** and TikTok spend rose from **$1,127 to $2,707**. Affiliate spend was **$361** for **4,778 clicks**; the channel has no impression data. The source-level results are consistent with the mix shift, but they do not prove that spend caused it or establish lifetime ROI.
+
+## Hypotheses rejected
+
+- **“Revenue was flat QoQ.”** Rejected for the available transaction data: Q3 revenue was **16.8% higher** than Q2. The latest month is flatter than the quarter average.
+- **“The whole MAU increase is a logging artifact.”** Rejected: monthly viewers also rose **11.3%**. However, affiliate activity includes many session users with no recorded views.
+- **“Existing users generally monetized worse.”** Rejected for the fixed group active in both quarters: payer conversion and revenue per active user-month both increased.
+- **“Refunds erased Q3 growth.”** Rejected: refunds were **-$519** in Q2 and **-$410** in Q3, so refunds were less negative in Q3.
+- **“Failed attempt amounts equal lost revenue.”** Not supported: repeated attempts and later recoveries mean failed amounts cannot be treated as foregone sales from these records alone.
+
+## Recommendations
+
+1. **Reconcile the Brazil/Pix price points before the board meeting.** Match the $49.90 subscription and $9.90/$14.90 PPV records to processor settlements, currency, plan/SKU, and billing period. Present both views until verified: raw Q3 receipts of **$24,460 (+16.8%)**, and the high-price-point sensitivity of **$21,742 (+3.8%)**. The amount in question is **$2,718** for Q3.
+2. **Investigate Pix first, then Oxxo and PSE.** Break failures down by processor response code, price point, retry, and customer; add recovery tracking. At Q3 attempt volumes, bringing these rails back to their Q2 failure rates would mean roughly **228 fewer failed attempts per quarter**—a benchmark, not a revenue forecast. Track completed charges and recovered revenue, not failed amounts.
+3. **Cap or pause affiliate expansion pending a quality check; do not scale TikTok on MAU alone.** Affiliate generated **1,508 user-months** but only **2 payer-months** and **594 viewers** in Q3. Audit click and signup quality, and require view, retention, and paid-conversion measures before expanding. At Q3 spend, the affiliate budget at issue was **$361**; no reliable lifetime value or customer-acquisition-cost estimate is available.
+4. **Run a controlled reallocation test toward proven payers, including Google Search.** Google Search had a **35.6%** Q3 payer rate while TikTok had **1.7%**, but source attribution is observational. Use a holdout or geo test and evaluate retained paying users and revenue per acquired user before moving more budget; do not use installs or MAU as the success metric.
+5. **Give the board a two-part growth dashboard:** session MAU and viewer MAU, alongside payer conversion and net revenue per active user. Add currency, plan/SKU, and revenue-recognition fields so future quarter comparisons separate true monetization from localized pricing and cash timing.
+
+## Confidence and open questions
+
+- **High confidence:** The Q2/Q3 session-MAU and successful-transaction trends, the source-level payer counts, the price points recorded, and the payment-failure counts in the available tables.
+- **Medium confidence:** Acquisition mix is diluting payer conversion; marketing shifts are consistent with that pattern, but the data does not establish causality.
+- **Low confidence on interpretation of high-price transactions:** The Brazil/Pix-only pattern is clear, but the data cannot tell whether it is a valid localized offer, a different subscription period, or a currency-reporting issue.
+- **Open questions:** Does the board’s MAU use the same session-based definition? Are the Brazil/Pix prices denominated in USD and what plan do they represent? What share of failed payments later recovered, and what is channel-level 30/90-day paid-user value? The database does not contain the metadata needed to settle those questions.
+==============================================================================
+model: gpt-6-luna | model calls: 14 | run_sql calls: 29 (0 errors) | tokens: 298,483 in / 34,174 out (23,901 reasoning) | estimated cost: $0.0469 | wall time: 299 s (model 294 s) | stopped by: model finished
+Trace: C:\Users\HP\pockettoons-analyst\investigation\traces\20261029_121327_mau-is-up-20-qoq-but-revenue-is-flat-boa.md

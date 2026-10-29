@@ -1,0 +1,111 @@
+[ 1] get_schema
+[ 2] sql 1/40: Establish monthly session- and viewing-based MAU alongside net successful transaction reve -> 6 rows (514 ms)
+[ 3] hypotheses: 5 open
+[ 4] sql 2/40: Break down monthly transaction attempts and outcomes by product/refund type, amounts, and  -> 30 rows (0 ms)
+[ 5] sql 3/40: Inspect observed country, acquisition, subscription snapshot, platform, and view-type cate -> 25 rows (390 ms)
+[ 6] sql 4/40: Check monthly payment method and transaction outcome shifts that might explain the revenue -> 100 rows (0 ms)
+[ 7] sql 5/40: Quantify monthly payer penetration, product-line revenue and payers, refunds, and failed t -> 6 rows (141 ms)
+[ 8] sql 6/40: Test whether quarterly MAU growth and falling payer conversion are concentrated in particu -> 39 rows (375 ms)
+[ 9] sql 7/40: Test country-level concentration of MAU growth and monetization deterioration, merging the -> 48 rows (297 ms)
+[10] sql 8/40: Separate acquisition-mix effects from within-cohort behavior by comparing monthly payer co -> 9 rows (280 ms)
+[11] sql 9/40: Validate actual monthly price points and determine whether the stated subscription and PPV -> 52 rows (0 ms)
+[12] hypotheses: 4 supported, 1 inconclusive
+[13] sql 10/40: Measure which acquisition sources added or lost monthly active users and monetization betw -> 13 rows (421 ms)
+[14] sql 11/40: Quantify geographic contributions to Q2-to-Q3 MAU growth and payer-rate decline, correctin -> 16 rows (406 ms)
+[15] sql 12/40: Retest monetization change within a fixed, pre-Q2 signup cohort present before both period -> 2 rows (202 ms)
+[16] sql 13/40: Check monthly paid marketing investment and reported reach by channel, especially around t -> 27 rows (0 ms)
+[17] sql 14/40: Identify which payment methods and product types drove the August-September increase in fa -> 100 rows (16 ms)
+[18] sql 15/40: Calculate exact Q2-versus-Q3 run rates and decompose revenue flatness into MAU, payer conv -> 2 rows (187 ms)
+[19] sql 16/40: Check whether the new affiliate/TikTok audience has real viewing activity or only session  -> 21 rows (14062 ms)
+[20] sql 17/40: Compare signup volume by acquisition source and month with activity growth, verifying whet -> 75 rows (16 ms)
+[21] sql 18/40: Test whether free/subscription/PPV content consumption shifted between Q2 and Q3 and wheth -> 6 rows (889 ms)
+[22] sql 19/40: Bridge Q2-to-Q3 revenue by a fixed pre-existing cohort, Q2 signups and Q3 signups, quantif -> 5 rows (391 ms)
+[23] sql 20/40: Quantify the Q2-to-Q3 acquisition budget shift and corresponding signups by source to test -> 13 rows (0 ms)
+[24] sql 21/40: Check the stated eight-free-episode daily limit against distinct free episodes viewed per  -> 6 rows (733 ms)
+[25] sql 22/40: Locate the August-September rise in failed attempts by payment method and quantify repeate -> 48 rows (0 ms)
+[26] sql 23/40: Compare engagement quality across sources by sessions, session length, and actual viewing, -> 13 rows (702 ms)
+[27] sql 24/40: Compare Q2 and Q3 successes and failures by payment method and product to quantify the lat -> 72 rows (15 ms)
+[28] sql 25/40: Validate the active-user headline using a stricter viewing-based MAU and quantify the Q3 d -> 6 rows (453 ms)
+[29] sql 26/40: Check that view_type transaction labels align with catalog free/premium tiers over time be -> 24 rows (717 ms)
+[30] sql 27/40: Quantify whether the sudden Q3 payment failures are concentrated in Pix, Oxxo, and PSE, an -> 2 rows (0 ms)
+[31] sql 28/40: Verify whether Pix, Oxxo, and PSE failure spikes map to their corresponding Brazil, Mexico -> 6 rows (16 ms)
+[32] sql 29/40: Inspect country and payment-method concentration of nonstandard $49.90 subscription charge -> 12 rows (0 ms)
+[33] sql 30/40: Sanity-check the end-of-September subscription-status snapshot against September successfu -> 3 rows (16 ms)
+[34] sql 31/40: Calculate exact quarter-level collected transaction value and a transparent subscription-p -> 10 rows (15 ms)
+[35] sql 32/40: Check whether premium content supply changed around the start of the PPV and subscription- -> 18 rows (0 ms)
+[36] sql 33/40: Reconcile the exact quarterly definition and totals for the reported MAU/revenue gap, usin -> 2 rows (140 ms)
+[37] sql 34/40: Test whether PPV purchase/viewing and subscription conversion weakened within the same sig -> 5 rows (1000 ms)
+[38] sql 35/40: Quantify the premium content supply change between Q2 and Q3 that may have reduced PPV pur -> 2 rows (0 ms)
+[39] hypotheses: 5 supported, 1 rejected
+[40] sql 36/40: Measure how treating the unexpected $49.90 charges and corresponding refunds as standard $ -> 2 rows (0 ms)
+[41] sql 37/40: Check whether the Q3 active-user increase is concentrated on a platform, while noting tran -> 6 rows (453 ms)
+
+==============================================================================
+## Answer
+
+The headline is real **if MAU means a session**: average monthly MAU rose **19.8%**, while net successful transaction value slipped **2.4%**. The growth is not translating into payers: monthly payer rate fell from **20.4% to 14.3%**. Two offsets are masking a deeper issue: fewer older users are active, while new, low-converting users and a maturing Q2 cohort partly replace their revenue. PPV demand and localized payment success also weakened.
+
+## Definition and scope
+
+- Compared **Q2 (April–June 2026)** with **Q3 (July–September 2026)**, the latest complete quarter in the data, through **September 30, 2026**.
+- **MAU:** distinct users with at least one session in a calendar month; quarterly figures are the average of the three monthly counts. I also checked distinct viewers as a stricter activity measure.
+- **Revenue proxy:** successful transaction amounts, with successful refunds included as negative amounts, grouped by transaction date. This is **net transaction value**, not accounting revenue: fees, taxes, deferred revenue, and recognition timing are not in the data.
+- **Payer rate:** distinct users with a successful subscription or PPV transaction in the month divided by session-based MAU.
+- “Q2 signup” and “Q3 signup” refer to users’ signup dates; cohort revenues below are average monthly transaction value from those users during each quarter.
+
+## Data quality
+
+- **Activity definition matters:** session MAU averaged **4,449 in Q2** and **5,328 in Q3** (+19.8%). Viewer MAU averaged about **4,448** and **5,060** (+13.8%). In July–September, **208, 302, and 295** session-active users per month, respectively, had no content view; the affiliate source accounts for an unusually shallow share of activity.
+- **Transactions distinguish attempts from outcomes:** failed rows are attempts, not collected revenue; refunds are successful rows with negative amounts. I excluded failed amounts from revenue. Pix/Oxxo/PSE had **257 failed attempts** in Q3 versus **33** in Q2; those are attempt rows, not 257 proven lost customers.
+- **Subscription price needs reconciliation:** subscription amounts were $9.99 through July, but Q3 includes **29 successful $49.90 charges** and **two $49.90 refunds**. If those should instead be $9.99 one-month transactions, Q3 averages **$6,408/month**, not $6,767—**7.5% below Q2**, rather than 2.4%. That is a sensitivity, not a correction: the data has no plan or billing-interval field to establish whether the charges are legitimate.
+- **Other checks:** US and USA both appear as country values; I merged them for country comparisons. No user test flag is available, so I did not remove accounts as bots. The affiliate activity looks suspiciously shallow, but the data does not prove it is non-human. The free-view log shows no user-day above the stated eight-episode limit: the maximum distinct free episodes viewed was eight.
+- Subscription status is only a September 30 snapshot, so I did not use it as historical subscriber or churn status.
+
+## Findings
+
+1. **The revenue-flat result is a net of large, offsetting cohort movements.** Average monthly net transaction value went from **$6,932 in Q2 to $6,767 in Q3** (−$164/month; quarterly totals **$20,794.62 and $20,302.43**). By signup cohort, the approximate monthly bridge is:
+   
+   | Signup cohort | Q2 avg. monthly MAU | Q3 avg. monthly MAU | Q2 avg. monthly value | Q3 avg. monthly value |
+   |---|---:|---:|---:|---:|
+   | Before April | 2,480 | 1,517 | $5,613 | $4,104 |
+   | Q2 signups | 1,969 | 1,375 | $1,319 | $2,081 |
+   | Q3 signups | — | 2,436 | — | $582 |
+
+   The pre-April group’s value fell about **$1,509/month** as its average active base shrank by **962 users/month**. Q2 signups added about **$762/month** as they matured; Q3 signups contributed about **$582/month**, but at only a **3.7%** payer rate. These cohort movements nearly reconcile to the overall **$164/month** decline. The cohort bridge is one way of explaining the headline; don’t add it to the product-line bridge below.
+
+2. **The added activity is weakly monetizing, and some of it may not represent meaningful viewing.** Q3 signups averaged **2,436 monthly active users**, about **89 monthly payers**, and a **3.7%** payer rate. For comparison, active pre-April signups had a **28.6%** payer rate in Q3, similar to their **28.2%** in Q2—but their active user count was much lower.  
+   - Affiliate Network appeared in Q3 with an average **495 monthly active users**, about **0.7 payers**, and **$6.66** average monthly transaction value. It brought **1,442 signups** on **$360.50** of reported spend for the quarter. Only **46%** of its active user-months included a view, versus nearly all active user-months for the other sources.
+   - TikTok average MAU increased from **399 to 689**, while its active-user payer rate fell from **3.17% to 1.40%**. Its spend rose from **$1,127 to $2,707** and signups from **593 to 1,320**.
+   - Meanwhile, Google Search spend fell from **$5,008 to $883** and signups from **828 to 147**; its active-user payer rate stayed around **31–32%**. This is consistent with an acquisition mix shift away from a high-converting source, though source-level active-user rates are not signup-to-paid conversion rates.
+
+3. **PPV is the clearest product-line decline, consistent with reduced premium-content supply.** Average monthly PPV value fell from **$691 to $451** (−$240), while subscription value rose from **$6,400 to $6,480** and refunds changed by only about **−$3/month**. Monthly PPV payers fell from **294 to 171**, and PPV views from **321 to 188**. Among active users who signed up before April, the PPV payer/viewer rate also fell, from **7.6% to 4.4%**.  
+   Premium additions fell from **7 titles / 173 episodes in Q2** to **1 title / 25 episodes in Q3**; there were no premium releases in August or September. This timing is consistent with weaker PPV demand, but does not prove the release gap caused it. These PPV figures overlap with the cohort revenue movements in finding 1.
+
+4. **Payment failures spiked in specific local methods, alongside an unusual Pix price pattern.** Across Pix, Oxxo, and PSE, the failed-attempt rate rose from **8.8% in Q2 to 58.5% in Q3**. The corresponding country/method rates changed from **6.5% to 57.0% for BR/Pix**, **13.7% to 59.7% for MX/Oxxo**, and **7.5% to 62.7% for CO/PSE**. Q3 had **112 distinct users** with a failed attempt on these methods, versus **23** in Q2. At Q3 attempt volume, applying the Q2 pooled failure rate would mean roughly **218 fewer failed attempt rows**; that is not an estimate of recovered customers or revenue. The reported failed amount is especially unreliable as a revenue-loss estimate because many Pix subscription attempts were $49.90.
+
+5. **The deterioration begins in July and continues into September.** From June to July, session MAU rose from **4,594 to 5,123**, but payer rate dropped from **21.6% to 16.6%** and PPV payers from **323 to 176**. By September, MAU was **5,473**, payer rate **12.6%**, and monthly net transaction value **$5,912**, down from **$7,452 in June**. Geographic growth was concentrated in Indonesia, the Philippines, and Vietnam: together their average monthly MAU rose by about **740** from Q2 to Q3, while their Q3 payer rates were **4.7%, 5.8%, and 4.1%**, respectively. Android also had the largest platform MAU increase, from **3,007 to 3,873** average monthly users; platform counts can overlap, and transactions have no platform attribution.
+
+## Hypotheses rejected
+
+- **A broad subscription-conversion collapse among established active users:** not supported. The pre-April active cohort’s overall payer rate was **28.2% in Q2 and 28.6% in Q3**; its subscription payer rate rose from **21.1% to 24.3%**. Its active base and total transaction value still fell substantially.
+- **Refunds explain the flat headline:** not supported. The Q2-to-Q3 change in average monthly refunds was only about **−$3**, versus the **−$164** monthly net-value change.
+- **Free-limit overruns explain the change:** not supported by observed view logs. No user-day exceeded eight distinct free episodes.
+
+## Recommendations
+
+1. **Investigate payment configuration and the $49.90 charge immediately.** Reconcile BR/Pix, MX/Oxxo, and CO/PSE with the payment providers, and confirm whether $49.90 is an authorized plan or a billing error. Track daily attempt and success rates, unique users who fail without later success, and net collected value by country, method, and price. The measurable opportunity is to reduce the Q3 excess of roughly **218 failed attempt rows** versus the Q2 pooled rate—not to book that as recoverable revenue.
+2. **Treat affiliate volume as unverified until its activity is validated.** Pause scaling and require verified viewing/retention or purchase quality before paying for or counting the channel as successful acquisition. Its current Q3 run-rate was about **495 MAU, 0.7 payers, and $6.66/month** from roughly **$120/month** of spend. Check view rate, repeat activity, and payer rate against other sources; do not label it fraud without stronger evidence.
+3. **Run a controlled high-intent acquisition test.** Test moving some budget back toward Google Search while limiting further TikTok expansion until cohort monetization improves. Restoring the Q2-to-Q3 Google spend gap of about **$1,375/month** would imply roughly **225 additional signups/month at the observed Q2 cost per signup**—a test assumption, not a revenue forecast. Judge the test on 30-day viewing and paid conversion, not signups alone.
+4. **Rebuild premium release cadence and test the PPV path.** Q2 averaged about **2.3 premium title releases/month**, compared with **0.3/month in Q3**. Test a steadier release schedule with targeted PPV prompts; the observed PPV value gap is about **$240/month**, but the data cannot establish how much a release test would recover. Measure PPV conversion and value per exposed active user against a holdout.
+5. **Launch a reactivation test for older cohorts and report viewer MAU alongside session MAU.** The pre-April active base fell by about **962 users/month**, with its monthly value down about **$1,509**; use those as the size of the observed gap, not guaranteed recoverable impact. Measure 30-day return, viewing, and transaction value. For board reporting, show both session MAU (**+19.8%**) and viewer MAU (**+13.8%**) so shallow session activity is not mistaken for engaged growth.
+
+## Confidence and open questions
+
+- **High confidence:** the Q2–Q3 MAU, payer-rate, and net-transaction trends, given the event definitions above.
+- **Medium confidence:** low-quality acquisition mix and reduced premium supply contributed to weaker monetization. The source and release patterns are strong, but the data does not establish causality.
+- **Medium confidence:** the localized payment failure spike is real; the number of failures that would become successful payments or revenue is unknown.
+- **Low confidence until billing is reconciled:** whether the $49.90 charges are legitimate multi-period purchases. If they are not, the board’s revenue comparison changes materially.
+- Historical churn, recognized accounting revenue, channel incrementality, plan/price identity, and payment error reasons are not available in these tables.
+==============================================================================
+model: gpt-6-luna | model calls: 18 | run_sql calls: 37 (0 errors) | tokens: 458,368 in / 38,343 out (24,944 reasoning) | estimated cost: $0.0650 | wall time: 445 s (model 422 s) | stopped by: model finished
+Trace: C:\Users\HP\pockettoons-analyst\investigation\traces\20261029_063947_mau-is-up-20-qoq-but-revenue-is-flat-boa.md

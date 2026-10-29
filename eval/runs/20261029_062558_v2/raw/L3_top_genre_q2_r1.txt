@@ -1,0 +1,15 @@
+[ 1] get_schema
+[ 2] sql 1/40: Count Q2 2026 view-event rows by catalog genre, with view-type and distinct-viewer checks, -> 10 rows (407 ms)
+
+==============================================================================
+## Answer
+**Isekai** had the most content views in Q2 2026, with **57,997**—**4,133 more** than fantasy, the runner-up.
+
+## Definition and scope
+Counted view-event rows from April 1 through June 30, 2026, grouped by the genre of the viewed title.
+
+## Data quality
+Matched view events to the content catalog by content ID. The genre results covered the full Q2 date range.
+==============================================================================
+model: gpt-6-luna | model calls: 3 | run_sql calls: 1 (0 errors) | tokens: 7,302 in / 608 out (281 reasoning) | estimated cost: $0.0010 | wall time: 14 s (model 14 s) | stopped by: model finished
+Trace: C:\Users\HP\pockettoons-analyst\investigation\traces\20261029_062623_which-genre-had-the-most-content-views-i.md
