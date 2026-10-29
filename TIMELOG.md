@@ -50,3 +50,10 @@
     up 16.8%, not flat. $0.19.
   - Results in eval/results.md. Recommendation: use v2 for "why" questions; default stays v1 so
     Phase 3 reproduces.
+
+## Final: README and Colab (29 Oct, 12:36–13:30)
+
+- README for graders: overview, quick start, results at a glance, design decisions, honest limits.
+- Colab notebook (notebooks/pockettoons_colab.ipynb): runs the whole project in a browser.
+  Tested cell by cell; fixed dollar amounts being shown as math formulas in Colab output.
+- Repo made public.
