@@ -1,0 +1,112 @@
+[ 1] get_schema
+[ 2] sql 1/40: Establish monthly active users and transaction revenue trends to verify the reported QoQ d -> 6 rows (156 ms)
+[ 3] sql 2/40: Check the actual transaction, platform, geography, acquisition, subscription, and viewing  -> 38 rows (296 ms)
+[ 4] sql 3/40: Validate transaction outcomes, signs, and price levels by month and product type before de -> 30 rows (16 ms)
+[ 5] hypotheses: 4 open, 1 supported
+[ 6] sql 4/40: Separate the MAU-revenue gap into payer conversion, revenue per active user, subscription  -> 6 rows (155 ms)
+[ 7] sql 5/40: Identify the actual monthly price points and determine whether anomalous high-value or fai -> 51 rows (15 ms)
+[ 8] sql 6/40: Quantify the US/USA country-code variant and inspect signup coverage before deciding how t -> 9 rows (16 ms)
+[ 9] sql 7/40: Check monthly acquisition volumes to assess whether the activity growth could reflect a sh -> 12 rows (16 ms)
+[10] hypotheses: 3 open, 2 supported
+[11] sql 8/40: Compare active-user monetization in the fixed pre-Q3 signup base against new Q3 signups to -> 9 rows (218 ms)
+[12] sql 9/40: Find which countries account for active-user growth and whether the payer conversion shift -> 48 rows (203 ms)
+[13] sql 10/40: Check whether acquisition-source mix or within-source conversion changes explain the MAU g -> 39 rows (203 ms)
+[14] sql 11/40: Localize the August/September payment failure spike by method and distinguish failed attem -> 92 rows (0 ms)
+[15] sql 12/40: Check whether viewing mix and engagement changed alongside MAU, and validate view_type aga -> 24 rows (766 ms)
+[16] sql 13/40: Inspect high-value Pix and $49.90 transactions by product and outcome to determine whether -> 33 rows (16 ms)
+[17] sql 14/40: Quantify the effect of Pix and above-plan subscription charges on monthly net revenue, and -> 6 rows (14 ms)
+[18] sql 15/40: Measure Q2-to-Q3 monetization changes among the same users who were active in both quarter -> 2 rows (219 ms)
+[19] sql 16/40: Inspect marketing investment and channel mix shifts alongside new signups and low-converti -> 27 rows (0 ms)
+[20] sql 17/40: Compare Q2 and Q3 active-user-month conversion and revenue by acquisition source to quanti -> 13 rows (405 ms)
+[21] sql 18/40: Recalculate revenue under a transparent Pix currency-conversion sensitivity and compare Q2 -> 6 rows (157 ms)
+[22] sql 19/40: Quantify the quarter-over-quarter marketing reallocation that may have driven low-converti -> 9 rows (0 ms)
+[23] sql 20/40: Measure signup-source mix shift directly and estimate how much new Q3 volume came from sou -> 13 rows (16 ms)
+[24] sql 21/40: Sanity-check whether MAU growth may be driven by trivial or anomalous sessions rather than -> 6 rows (203 ms)
+[25] sql 22/40: Check if platform mix or within-platform payment conversion explains the Q3 active-user gr -> 18 rows (296 ms)
+[26] sql 23/40: Calculate comparable Q2/Q3 MAU and revenue totals, using an explicit Pix currency correcti -> ERROR no such column: date (0 ms)
+[27] sql 24/40: Confirm which countries and methods account for anomalous Pix pricing and the OXXO failed- -> 24 rows (0 ms)
+[28] sql 25/40: Test whether the new Q3 affiliate/TikTok traffic consists of lightly engaged or non-viewin -> 13 rows (766 ms)
+[29] sql 26/40: Calculate comparable Q2/Q3 MAU and revenue totals, using an explicit Pix currency correcti -> 2 rows (406 ms)
+[30] hypotheses: 4 supported, 1 rejected
+[31] sql 27/40: Quantify the revenue bridge: how much Q3 revenue growth would follow from more active-user -> 1 rows (657 ms)
+[32] sql 28/40: Check whether logged free-tier episode consumption aligns with the eight-free-episodes-per -> 6 rows (530 ms)
+[33] sql 29/40: Quantify whether the affiliate acquisition cohort's MAU activity is mostly non-viewing or  -> 1 rows (15 ms)
+[34] sql 30/40: Recompute affiliate engagement using separately aggregated session, view, and payment reco -> 1 rows (234 ms)
+[35] sql 31/40: Compare source-matched marketing spend with signup volume in Q2 and Q3 as a directional ac -> 9 rows (0 ms)
+[36] sql 32/40: Quantify each acquisition source's contribution to the 2,366 active-user-month increase, w -> ERROR no such column: acquisition_source (0 ms)
+[37] sql 33/40: Create a clean monthly payer-rate trend on the same session-based MAU denominator for boar -> 6 rows (203 ms)
+[38] sql 34/40: Quantify each acquisition source's contribution to the increase in active-user-months usin -> 7 rows (437 ms)
+[39] sql 35/40: Correct the marketing efficiency comparison using only signups actually acquired during Q2 -> 9 rows (16 ms)
+[40] sql 36/40: Confirm the fraction of net active-user-month growth attributable to affiliate and TikTok  -> 1 rows (328 ms)
+[41] hypotheses: 4 supported, 2 rejected
+[42] sql 37/40: Return a single auditable board-ready comparison of Q2/Q3 average MAU, raw and Pix-adjuste -> 1 rows (125 ms)
+
+==============================================================================
+## Answer
+
+The data does **not** show a clean “MAU up 20%, revenue flat” on a standard quarter-over-quarter basis: average monthly MAU rose **17.5%** from Q2 to Q3, while net transaction revenue rose **16.8% raw**. But Brazil Pix transactions appear to be recorded at roughly **5×** their normal USD prices from August; under a transparent correction sensitivity, Q3 revenue growth is only **6.4%**, and adjusted revenue per active-user-month falls from **$1.545 to $1.400**. The main business issue is that almost all the added activity came from low-yield acquisition sources—especially affiliate—rather than a broad monetization decline among retained users.
+
+## Definition and scope
+
+- **Comparison:** Q2 2026 (April–June) versus Q3 2026 (July–September), the complete quarters in the transaction and session data.
+- **MAU:** distinct users with at least one session in a calendar month; quarter figures are the average of the three monthly MAUs.
+- **Revenue:** successful transaction amounts, including negative logged refunds and excluding failed attempts. This is **net transaction revenue in the database**, not finance-verified recognized revenue.
+- **Pix sensitivity:** for August and September only, divide successful Brazil Pix amounts by five, reflecting the observed relationship between Pix amounts and the listed USD prices. This is an estimate pending processor settlement data—not a confirmed accounting correction.
+- **Revenue per active-user-month:** net transaction revenue divided by the sum of monthly MAUs in the quarter.
+
+| Metric | Q2 | Q3 raw | Q3 Pix-adjusted sensitivity |
+|---|---:|---:|---:|
+| Average monthly MAU | 4,519 | 5,308 | — |
+| Quarter net transaction revenue | $20,941 | $24,460 | $22,286 |
+| Average monthly revenue | $6,980 | $8,153 | $7,429 |
+
+## Data quality
+
+- **Pix amounts need urgent reconciliation.** Subscription transactions at **$49.90** appear from August, versus the brief’s **$9.99/month** price; PPV transactions at **$9.90** and **$14.90** also appear. These amounts are confined to Pix transactions for users in Brazil and are approximately five times the familiar **$9.99**, **$1.99**, and **$2.99** price points. The database has no currency or price-plan field, so it cannot confirm whether these are unconverted local-currency amounts or a legitimate price change. Dividing August/September Pix receipts by five reduces Q3 revenue by about **$2,175**.
+- **Failed attempts are not revenue.** Failures rose from **77 in July** to **188 in August** and **171 in September**. Pix and OXXO accounted for **107 of the 111** additional failure attempts from July to August. Attempts may include retries, so this is not a count of unique lost customers or recoverable dollars.
+- **The free-episode limit does not appear to be binding in the logs.** Distinct free episodes averaged **2.75–2.84 per user-day**, the monthly maximum was **5**, and no logged user-day exceeded the eight-episode limit.
+- The country values include both **US** and **USA**; I combined them for geography comparisons. The database has no test-user, device, or bot flag. Affiliate activity looks suspiciously low-intent, but the data cannot prove it is duplicate or non-human traffic.
+- The revenue and session event data cover only **April–September 2026**. Subscription status is a September snapshot, not historical subscriber activity, so I did not use it to infer quarterly conversion.
+
+## Findings
+
+1. **Low-yield activity growth is the clearest explanation for the gap.** Q3 added **2,366 active-user-months** over Q2. Affiliate and TikTok together added **2,327**, or **98.4%** of that net increase. Affiliate added **1,508** active-user-months and TikTok **819**.
+   - Affiliate produced only **2 payers** among **1,409** users with sessions; **815** had no recorded content view, and **64.2%** of its sessions were under 60 seconds. Q3 affiliate revenue was **$4.98** against **$360.50** of channel spend.
+   - TikTok’s payer rate was **1.7% per active-user-month** in Q3, versus **2.3%** in Q2. The source-level result is observational, but the concentration is strong.
+   - **Impact estimate:** At Q2 revenue yield, Q3’s added activity would have produced **$3,655** in additional revenue. Instead, lower Q3 yield/mix offset **$2,310** of that potential growth. This is a bridge estimate, not a causal attribution; it overlaps with the source and conversion figures above.
+
+2. **The Pix issue makes the raw revenue comparison misleading.** Raw Q3 transaction revenue is up **16.8%** versus Q2, but the Pix-adjusted sensitivity is up **6.4%**. The adjusted revenue per active-user-month is down **9.4%**. If the board is comparing the latest month with the previous quarter’s ending month, September’s adjusted revenue is **$7,187**, below June’s **$7,657**, even as MAU rose from **4,682** to **5,401**.
+
+3. **The decline is not evident among users active in both quarters.** Among the same **3,467** users who had sessions in both Q2 and Q3, those with a successful payment in the quarter rose from **1,244 (35.9%)** to **1,296 (37.4%)**. This retained-user comparison is conditional on remaining active, so it does not describe users who lapsed. Still, it argues against a broad deterioration among retained users and points toward the composition and early monetization of newer activity.
+
+4. **Payer conversion weakened in the monthly headline.** Session-based payer rate fell from **21.8% in June** to **16.8% in September**. Q3 signups show lower early conversion than the pre-Q3 active base: Q3-signup active users’ payer rate rose from **2.9% in July** to **6.5% in September**, while the pre-Q3 signup group ranged from **26.3% to 29.9%** across those months. Tenure and acquisition mix differ, so those rates should not be treated as a causal comparison.
+
+5. **Payment failures are a separate operational warning.** OXXO failures in Mexico rose from **7 in July** to **31 in August** and **35 in September**, while successful OXXO transactions fell from **40** to **16**. Pix failures also spiked as the unusual amounts began. These failures could be costing conversions, but the available data cannot quantify lost revenue or distinguish retry attempts from unique customers.
+
+## Hypotheses rejected
+
+- **“Retained users broadly stopped paying.”** Not supported: the same users active in both quarters had a higher share paying in Q3 (**37.4%**) than in Q2 (**35.9%**).
+- **“The eight-free-episode cap is pushing users toward paid content.”** Not supported by the view logs: no user-day exceeded **5** distinct free episodes, below the stated cap of eight.
+
+## Recommendations
+
+1. **Reconcile Pix settlement and fix currency handling before presenting revenue as final.** Match August/September Pix transactions to processor settlement and add explicit currency and price fields; alert if recorded USD amounts diverge from the catalog price. **Estimated impact:** roughly **$2,175** of Q3 revenue is affected by the five-times sensitivity. Confirm the settlement before changing customer charges or issuing refunds.
+
+2. **Pause or renegotiate affiliate acquisition until quality improves.** At the observed Q3 spend, this puts **$360.50 per quarter** at stake; the source generated **1,508 active-user-months**, but only **2 payers**, with **815** users recording no view. Run a controlled test with payment tied to qualified viewing or paid conversion. Track view rate, sessions under 60 seconds, and 30-day payer conversion before restarting spend.
+
+3. **Do not scale TikTok on MAU alone; run a conversion-focused test.** Q3 TikTok spend was **$2,707**, and its payer rate was **1.7% per active-user-month**. Test creative, landing flow, and onboarding against a holdout; judge on paid conversion and revenue per signup, not installs or MAU. The dataset does not support a reliable revenue-uplift estimate yet.
+
+4. **Investigate OXXO declines with the payment processor and add recovery paths.** Review rejection reasons, retry handling, and an alternate-payment prompt in Mexico. Measure successful payment rate and recovered revenue by method; failed-attempt counts alone do not establish the dollar opportunity.
+
+5. **Do not tighten the free cap as the immediate fix.** Logged users rarely approach it. Test premium-content discovery and paid prompts at moments of demonstrated intent instead, measuring paid conversion against a randomized control.
+
+## Confidence and open questions
+
+- **High confidence:** The session-based Q2/Q3 MAU and transaction totals, the source-level activity bridge, and the logged payment failure counts.
+- **Medium confidence:** The Pix currency explanation. The Brazil-only five-times price pattern is compelling, but currency and processor settlement fields are missing; obtain processor records before treating the adjusted figure as booked revenue.
+- **Medium confidence:** Acquisition mix is driving the gap. The low affiliate view and payer activity is clear, but source correlations do not prove the cause; validate with controlled acquisition tests.
+- **Low confidence:** Whether affiliate accounts are bots, duplicates, or simply low-intent users. Device-level identifiers and traffic-quality flags are needed.
+- **Open:** Whether transaction amounts reconcile to finance revenue after fees, settlement timing, and any unlogged refunds. The database cannot answer that without the payment settlement ledger.
+==============================================================================
+model: gpt-6-luna | model calls: 20 | run_sql calls: 37 (2 errors) | tokens: 549,900 in / 38,949 out (24,902 reasoning) | estimated cost: $0.0745 | wall time: 406 s (model 399 s) | stopped by: model finished
+Trace: C:\Users\HP\pockettoons-analyst\investigation\traces\20261029_070807_mau-is-up-20-qoq-but-revenue-is-flat-boa.md

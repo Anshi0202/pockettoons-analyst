@@ -26,7 +26,7 @@
   Found: headline, LatAm payments, channel shift, USA/US. Partial: bots, BRL bug, red herring.
   Missed: free-limit change (largest cause). Never checked whether existing users' conversion fell, or tested the free-episode rule against the data.
 
-## Phase 4: Eval (29 Oct, 05:26–06:25, in progress)
+## Phase 4: Eval (29 Oct, 05:26–07:25)
 
 - Built the eval: 18 questions with SQL answer keys (8 lookups, 6 traps, 3 declines, GM question x3),
   auto-marker, runner, compare and regrade scripts. Committed before any run.
@@ -42,3 +42,11 @@
 - Prompt v2 added behind PT_PROMPT=v2 (default unchanged): steps 3-5 made concrete (measure stated
   rules over time, monthly trend and run-rate, re-measure rate changes in a fixed group) plus a
   step 9 self-check that ranks drivers.
+  - v2 run (06:25–06:55): 20 runs, 29 min, $0.26. Lookups 8/8, traps 4/6 (same two), declines 3/3.
+    GM question x3 hand-checked 80/70/70% (baseline 70/60/70). Fixed-group check, run-rate and rule
+    check 0/3 -> 3/3; free-limit change found 1/3 (baseline 0/3). Red herring still 2/3.
+  - Control (12:06–12:25): v2 on a database without the limit change. Free-limit question: "5, no
+    change" (correct). GM question x3: no invented limit change (0/3); all 3 said revenue is actually
+    up 16.8%, not flat. $0.19.
+  - Results in eval/results.md. Recommendation: use v2 for "why" questions; default stays v1 so
+    Phase 3 reproduces.

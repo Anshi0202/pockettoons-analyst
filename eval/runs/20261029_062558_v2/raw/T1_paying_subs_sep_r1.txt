@@ -1,0 +1,21 @@
+[ 1] get_schema
+[ 2] sql 1/40: Count users in each end-of-September subscription snapshot status to identify the direct s -> 3 rows (16 ms)
+[ 3] sql 2/40: Check whether the end-of-period user snapshot fields are internally plausible and compare  -> 3 rows (16 ms)
+[ 4] sql 3/40: Verify the snapshot's subscription dates and compare unique users in each status with succ -> 3 rows (30 ms)
+[ 5] hypotheses: 1 supported, 1 rejected
+
+==============================================================================
+## Answer
+PocketToons had **568 paying subscribers** at the end of September 2026.
+
+## Definition and scope
+Count of users whose subscription status was **active** in the snapshot dated **September 30, 2026**.
+
+## Data quality
+All 568 active users had a subscription start date, no subscription end date, and at least one successful subscription transaction in the transaction history, which covers April 1–September 30, 2026.
+
+## Confidence and open questions
+**High** for the snapshot count. The transaction-history cross-check covers only April through September 2026.
+==============================================================================
+model: gpt-6-luna | model calls: 6 | run_sql calls: 3 (0 errors) | tokens: 17,539 in / 1,326 out (442 reasoning) | estimated cost: $0.0024 | wall time: 23 s (model 23 s) | stopped by: model finished
+Trace: C:\Users\HP\pockettoons-analyst\investigation\traces\20261029_062850_how-many-paying-subscribers-did-we-have.md

@@ -1,0 +1,24 @@
+[ 1] get_schema
+[ 2] sql 1/40: Checks observed viewing categories and monthly event volumes before inferring the free-epi -> 18 rows (609 ms)
+[ 3] sql 2/40: Measures monthly per-user daily free-view counts, including maxima and counts at or beyond -> 6 rows (890 ms)
+[ 4] hypotheses: 3 open
+[ 5] sql 3/40: Checks whether users frequently hit the five-view observed ceiling in each month, which he -> 6 rows (500 ms)
+[ 6] sql 4/40: Validates whether the free view_type rows correspond to catalog items marked free, so the  -> 4 rows (500 ms)
+[ 7] hypotheses: 1 open, 1 supported, 1 rejected
+[ 8] sql 5/40: Checks whether repeated plays of the same episode could inflate the per-day free-episode c -> 6 rows (782 ms)
+
+==============================================================================
+## Answer
+
+The viewing data shows an observed ceiling of **5 free episodes per user per day**, not 8. It was unchanged in every month covered, **April–September 2026**; the data does not cover January–March, so it cannot establish whether the limit changed earlier in the year.
+
+## Definition and scope
+
+Counted distinct free episodes watched per user per calendar day, using `free` view events matched to catalog items marked `free`. The available viewing data runs from April 1 through September 30, 2026.
+
+## Data quality
+
+Free-view events matched free-tier catalog titles, and none of the user-days had repeat views of the same episode. The log shows a five-episode maximum each month, but viewing behavior alone cannot confirm the app’s configured limit. About a quarter of active free-view user-days reached five, which is consistent with—but does not prove—a five-episode cap.
+==============================================================================
+model: gpt-6-luna | model calls: 8 | run_sql calls: 5 (0 errors) | tokens: 32,917 in / 2,882 out (1,286 reasoning) | estimated cost: $0.0047 | wall time: 46 s (model 43 s) | stopped by: model finished
+Trace: C:\Users\HP\pockettoons-analyst\investigation\traces\20261029_070009_according-to-the-data-what-is-the-daily.md

@@ -1,0 +1,18 @@
+[ 1] get_schema
+[ 2] sql 1/40: Measure September 2026 distinct active users under standard session activity and cross-che -> 2 rows (141 ms)
+[ 3] hypotheses: 1 open, 1 supported
+[ 4] sql 2/40: Quantify the difference between session- and view-based September activity and validate th -> 1 rows (266 ms)
+[ 5] hypotheses: 2 supported
+
+==============================================================================
+## Answer
+September 2026 MAU was **5,473 users**, counting each user with at least one recorded session during the month.
+
+## Definition and scope
+MAU is the number of distinct users with a session from **September 1 through September 30, 2026**, inclusive.
+
+## Data quality
+All 5,473 session-active user IDs matched a user record. A view-based definition would give **5,178 users**; those users were all also in the session-based count.
+==============================================================================
+model: gpt-6-luna | model calls: 6 | run_sql calls: 2 (0 errors) | tokens: 17,165 in / 1,220 out (340 reasoning) | estimated cost: $0.0023 | wall time: 23 s (model 22 s) | stopped by: model finished
+Trace: C:\Users\HP\pockettoons-analyst\investigation\traces\20261029_062949_what-was-mau-in-september-2026.md

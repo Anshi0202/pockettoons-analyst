@@ -1,0 +1,24 @@
+[ 1] get_schema
+[ 2] sql 1/40: Check monthly view-type values and coverage to see whether free viewing events can reveal  -> 18 rows (719 ms)
+[ 3] sql 2/40: Measure free-view counts per user-day by month, including days at or above eight, to deter -> 6 rows (672 ms)
+[ 4] hypotheses: 3 open
+[ 5] sql 3/40: See how often users reach the observed five-view ceiling versus stopping earlier, which di -> 30 rows (764 ms)
+[ 6] sql 4/40: Validate whether view_type='free' corresponds only to free-tier episodes, so daily view co -> 4 rows (1266 ms)
+[ 7] sql 5/40: Confirm the monthly unique-episode ceiling, quantify how often it is reached, and ensure r -> 6 rows (937 ms)
+[ 8] hypotheses: 1 supported, 2 rejected
+
+==============================================================================
+## Answer
+The data indicate an effective limit of **five free episodes per user per day**, with **no change in the observed period**. This conflicts with the product brief’s stated limit of eight.
+
+## Definition and scope
+I counted distinct free-tier episodes watched per user per calendar day, using views marked `free`. View data covers **April–September 2026**; the maximum was five in each month.
+
+## Data quality
+Free-marked views mapped to free-tier episodes, and no user-day had repeat episodes that could inflate the count. About **24%–27%** of free-view user-days reached five episodes each month, supporting five as an effective ceiling. However, the database has no policy-setting history, and it has no view data for January–March, so it cannot confirm the configured limit or rule out a change in those months.
+
+## Confidence and open questions
+**Medium confidence** that five was the effective limit from April through September; **low confidence** about the configured policy or the full 2026 year. A limit/configuration history would resolve the discrepancy with the stated eight.
+==============================================================================
+model: gpt-6-luna | model calls: 9 | run_sql calls: 5 (0 errors) | tokens: 37,775 in / 3,003 out (1,351 reasoning) | estimated cost: $0.0053 | wall time: 52 s (model 47 s) | stopped by: model finished
+Trace: C:\Users\HP\pockettoons-analyst\investigation\traces\20261029_120609_according-to-the-data-what-is-the-daily.md

@@ -1,0 +1,21 @@
+[ 1] get_schema
+[ 2] sql 1/40: Check June viewing modes, content tiers, episode-duration validity and watch-time bounds t -> 4 rows (155 ms)
+[ 3] sql 2/40: Measure June watch share of free-tier episodes by viewing mode, comparing the mean per-vie -> 2 rows (264 ms)
+[ 4] sql 3/40: Calculate the headline June average across all view types of free-tier episodes, including -> 1 rows (280 ms)
+[ 5] hypotheses: 1 supported, 2 rejected
+
+==============================================================================
+## Answer
+Viewers watched **about 80% of free episodes on average** in June 2026.
+
+## Definition and scope
+For June 1–30, I averaged watch time as a share of episode length across **78,061 views** of episodes marked free in the catalog. This includes both free-mode and subscriber views of those episodes. The pooled ratio—total watch time divided by total episode length across views—was also **79.98%**.
+
+## Data quality
+No June free-episode views had watch time longer than the episode or invalid duration values. Restricting the calculation to free-mode views gives **79.99%**, so including subscriber views does not materially change the result.
+
+## Confidence and open questions
+**High** confidence in the June viewing estimate; it describes observed views, not unique viewers’ typical experience.
+==============================================================================
+model: gpt-6-luna | model calls: 6 | run_sql calls: 3 (0 errors) | tokens: 19,049 in / 1,875 out (759 reasoning) | estimated cost: $0.0028 | wall time: 31 s (model 30 s) | stopped by: model finished
+Trace: C:\Users\HP\pockettoons-analyst\investigation\traces\20261029_062641_in-june-2026-what-share-of-each-free-epi.md

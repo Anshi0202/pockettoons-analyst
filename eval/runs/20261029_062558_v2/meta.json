@@ -1,0 +1,20 @@
+{
+  "label": "v2",
+  "started": "2026-10-29T06:25:58",
+  "agent_env": {
+    "PT_PROMPT": "v2"
+  },
+  "git_commit": "3d5f7d2",
+  "python": "3.11.4",
+  "agent_files": {
+    "__init__.py": "e5153893be84",
+    "agent.py": "4ab4a0df5ca8",
+    "prompts.py": "83b1151032a7",
+    "test_offline.py": "1138d08a1215",
+    "tools.py": "32cc6c9931b4"
+  },
+  "db_sha256_before": "1cfeeed405dc598f2b73e8e6186074f333507a577fe0a02adde9c270658f4174",
+  "finished": "2026-10-29T06:55:09",
+  "db_sha256_after": "1cfeeed405dc598f2b73e8e6186074f333507a577fe0a02adde9c270658f4174",
+  "db_unchanged": true
+}

@@ -1,0 +1,118 @@
+[ 1] get_schema
+[ 2] sql 1/40: Establish monthly active users and successful net transaction revenue to verify the stated -> 6 rows (141 ms)
+[ 3] hypotheses: 4 open, 1 supported
+[ 4] sql 2/40: Check transaction type, status, payment-method variants, amount signs, and ranges before t -> 40 rows (16 ms)
+[ 5] sql 3/40: Decompose monthly net revenue into subscriptions, PPV and refunds alongside MAU and succes -> 6 rows (187 ms)
+[ 6] sql 4/40: Compare quarter totals and average-month measures using both monthly MAU and unique quarte -> 2 rows (358 ms)
+[ 7] sql 5/40: Locate the failure and amount anomalies by month, payment method, product type, and outcom -> 100 rows (15 ms)
+[ 8] sql 6/40: Enumerate country, acquisition, status, platform, view-type, and tier categories to ensure -> 27 rows (296 ms)
+[ 9] sql 7/40: Finish the payment-method category and amount-range quality check, including potentially a -> 40 rows (0 ms)
+[10] sql 8/40: Measure how monthly active-user growth is distributed across platforms and check for a pla -> 18 rows (233 ms)
+[11] sql 9/40: Separate new-signup mix from behavior among the pre-Q3 installed base by comparing monthly -> 9 rows (266 ms)
+[12] sql 10/40: Identify which countries account for monthly MAU growth and quantify the impact of the USA -> 48 rows (264 ms)
+[13] sql 11/40: Determine whether MAU growth is concentrated in specific acquisition sources. -> 39 rows (250 ms)
+[14] sql 12/40: Measure monetization and activity for a fixed cohort active in Q2 versus Q3 signups, disti -> 3 rows (437 ms)
+[15] hypotheses: 4 open, 3 supported
+[16] sql 13/40: Measure when successful transactions depart from the stated subscription price and observe -> 6 rows (0 ms)
+[17] sql 14/40: Test whether Q3 payment failures are concentrated in particular methods or product types a -> 32 rows (14 ms)
+[18] sql 15/40: Compare average activity and monetization by acquisition source across quarters to identif -> 13 rows (312 ms)
+[19] sql 16/40: Check whether the Q3 failure spike in local payment methods is geographically concentrated -> 6 rows (0 ms)
+[20] sql 17/40: Track acquisition spend by channel and month, including when affiliate marketing began, to -> 27 rows (0 ms)
+[21] sql 18/40: Identify which payment method and transaction products drive the Q3 pricing exceptions, an -> 3 rows (15 ms)
+[22] sql 19/40: Test whether low-monetizing acquisition sources show weak or suspicious engagement (sessio -> 13 rows (937 ms)
+[23] sql 20/40: Check for events before account creation and impossible duration values that could inflate -> 5 rows (203 ms)
+[24] sql 21/40: Validate view type against the catalog content tier over time before drawing conclusions a -> 6 rows (671 ms)
+[25] sql 22/40: Measure free-view counts per user-day against the eight-episode rule and track any change  -> 6 rows (641 ms)
+[26] sql 23/40: Disaggregate apparent view/catalog tier mismatches to distinguish legitimate subscriber ac -> 4 rows (532 ms)
+[27] sql 24/40: Quantify country-level MAU mix and monetization across quarters, normalizing the USA/US la -> 16 rows (280 ms)
+[28] sql 25/40: Quantify which platforms contribute to MAU growth, noting that one user can be active on m -> 6 rows (265 ms)
+[29] sql 26/40: Check when acquisition sources entered and whether their recorded user volumes align with  -> 75 rows (0 ms)
+[30] sql 27/40: Locate the onset and potential recoverable value of the Q3 payment failure rise, separatin -> 22 rows (0 ms)
+[31] sql 28/40: Re-test whether Q2-active users truly improved monetization after removing Q3 Pix amounts  -> 3 rows (62 ms)
+[32] sql 29/40: Pinpoint when the regional payment failure deterioration began by method and product, to i -> 43 rows (16 ms)
+[33] sql 30/40: Estimate excess failed local-payment attempts versus method-and-product-specific Q2 failur -> 6 rows (0 ms)
+[34] sql 31/40: Create the final month-by-month MAU, revenue, payer, product-mix, and failure view, includ -> 6 rows (125 ms)
+[35] sql 32/40: Check how much failed-transaction growth might reflect repeat attempts from the same user  -> 2 rows (14 ms)
+[36] sql 33/40: Compare the same Q2-active audience in both quarters on active reach, payer reach, and adj -> 2 rows (282 ms)
+[37] sql 34/40: Measure typical, minimum, and maximum successful transaction prices by month and product,  -> 18 rows (0 ms)
+[38] sql 35/40: Calculate the headline quarter-on-quarter changes and normalized monetization/failure metr -> 2 rows (156 ms)
+[39] sql 36/40: Quantify each source's contribution to the Q2-to-Q3 average-MAU change and distinguish rea -> 7 rows (328 ms)
+[40] sql 37/40: Show the sensitivity of the MAU headline to the new affiliate cohort, without assuming tha -> 2 rows (296 ms)
+[41] sql 38/40: Sanity-check the end-of-September subscription snapshot against subscription fields and su -> 3 rows (30 ms)
+[42] sql 39/40: Put the Q3 monetization shortfall versus Q2 yield and the low-yield Q3-signup cohort into  -> 1 rows (171 ms)
+[43] sql 40/40: Correctly recompute Q3 total and signup-cohort yield gaps from separate monthly user and t -> 1 rows (202 ms)
+   query budget used up; asking for the final answer
+
+==============================================================================
+## Answer
+
+The database does **not** show flat Q3 transaction revenue: average monthly MAU rose **17.5%** from Q2 to Q3, while successful transaction revenue net of refunds rose **16.8%**. But that revenue includes an unusual **$2,158 of Q3 Pix charges above the other observed price points**; a standard-price sensitivity puts revenue growth at **6.5%**, with revenue per active user-month down **9.3%**. Paid buyers barely grew, and payment failures in Brazil, Mexico and Colombia spiked from August—so the topline MAU growth is not translating into comparable monetization.
+
+## Definition and scope
+
+- Q2 means **April–June 2026**; Q3 means **July–September 2026**, the full period available in the event tables through September 30.
+- MAU is distinct users with a session in a month; the quarterly figure is the average of the three monthly counts.
+- Transaction revenue is successful subscription and PPV charges plus successful negative refunds; failed attempts are excluded.
+- “Standard-price sensitivity” is **not a confirmed finance restatement**: it caps subscriptions at $9.99, PPV at the highest ordinary observed price of $2.99, and refunds at −$9.99. The anomalous Pix amounts may have another explanation and need reconciliation.
+- A different MAU convention changes the result: unique users active at any time in each quarter rose from **7,009 to 8,866**, rather than the average-monthly-MAU comparison above.
+
+| Measure | Q2 average/month | Q3 average/month | Change |
+|---|---:|---:|---:|
+| MAU | 4,519 | 5,308 | **+17.5%** |
+| Successful transaction revenue, net of refunds | $6,980 | $8,153 | **+16.8%** |
+| Standard-price revenue sensitivity | $6,980 | $7,434 | **+6.5%** |
+| Standard-price revenue per MAU-month | $1.545 | $1.401 | **−9.3%** |
+| Monthly users with a successful purchase | 907 | 923 | **+1.8%** |
+| Monthly payer rate | 20.0% | 17.4% | **−2.6 percentage points** |
+| Successful subscription/PPV transactions | 960 | 965 | **+0.6%** |
+
+## Data quality
+
+- **Pricing anomaly:** through July, successful subscription charges were $9.99. In August and September, Pix includes **52 subscription charges**, **17 PPV charges**, and **one refund** outside the standard observed price points. Together they add **$2,157.88** above the sensitivity benchmark. The resulting Q3 sensitivity is $22,302 for the quarter, versus $24,460 recorded.
+- **Failed transactions are attempts, not unique purchase intents.** Q3 had 436 failed attempts; 46 were repeats within the same user/day/payment-method/product grouping. There are no intent IDs or decline reasons to establish how many distinct purchases could have been recovered.
+- **Country code:** 134 user records say `USA` rather than `US`; I grouped these with US for country comparisons. This does not change total MAU.
+- **Usage checks:** no session, view or transaction events predated signup, and no nonpositive session durations or invalid view durations were found. The highest observed free-episode count was **5 per user-day**, with no user-day above the stated 8-episode limit. The view data shows subscribers watching both free and premium titles, consistent with the brief; this is not itself a tier mismatch.
+- The user table has no explicit test-account, device, or email field, so test/duplicate human traffic cannot be conclusively ruled out. The affiliate cohort has unusually weak engagement, but that alone does **not** prove fraud.
+- Subscription snapshot statuses are broadly consistent with recorded subscription payments, but event history only covers April–September; the database does not provide a separate finance-recognized revenue or MRR table.
+
+## Findings
+
+1. **Purchase volume did not keep pace with the larger audience.** Monthly payers rose only 1.8% and successful paid transactions 0.6%, versus 17.5% MAU growth. The payer rate fell from 20.0% to 17.4%. In September, MAU was 5,401, while standard-price-sensitive revenue was $7,195—below the Q3 monthly average of $7,434.
+
+2. **Some recorded revenue growth is tied to anomalous Pix amounts.** The $2,158 price sensitivity is concentrated in August (**$1,372**) and September (**$786**). It reduces the apparent Q2-to-Q3 monthly revenue growth from 16.8% to 6.5%; on that sensitivity, revenue per MAU-month falls 9.3%. This is the largest reporting caveat, not a confirmed billing error: verify whether these are valid local-currency or product charges before restating revenue.
+
+3. **A large share of MAU growth came from low-monetizing sources.** Affiliate-network and TikTok activity added about **776 average monthly active users** between quarters, against net MAU growth of about **789**. Affiliate alone averaged **503 MAU/month**, but only **0.7 monthly payers**, **$4.98 total Q3 revenue**, 1.14 views per active-month and 1.99 sessions per active-month. TikTok averaged 699 MAU and a 1.7% payer rate. Excluding affiliate users as a sensitivity—not as a correction—would put Q3 average MAU at 4,805, or **6.3% above Q2**. The two source contributions overlap with geography and platform; do not add them together.
+
+4. **The older audience also weakened, so this is not only a new-user mix issue.** Of the 7,009 users active in Q2, 3,467—**49.5%**—were active again in Q3. Their average monthly active count fell from 4,519 to 2,883. After the standard-price sensitivity, their Q3 revenue was $19,878 versus $20,941 in Q2. This points to weaker reach/retention within the earlier audience, alongside the low-yield new cohort.
+
+5. **Payment failures jumped abruptly in three local payment methods.** Purchase-attempt failure rate rose from **5.9% in Q2 to 13.1% in Q3**, with the change beginning in August. Q3 failure rates were about **54.5% for Pix in Brazil**, **50.3% for Oxxo in Mexico**, and **50.7% for PSE in Colombia**, versus roughly 6–11% in Q2. Compared with method- and product-specific Q2 rates, Q3 had about **227 excess failed attempts**, worth roughly **$1,745 at reference prices**. That is a directional recovery opportunity—not forecast revenue—because attempts may include retries and unique purchase intents are unavailable.
+
+6. **Growth was concentrated in a few overlapping segments.** Average MAU rose by about 300 in Indonesia, 264 in the Philippines and 165 in Vietnam, while US MAU fell by about 87. Android platform actives rose by 788; users may use multiple platforms, so platform counts are not additive. These shifts help explain the mix, but do not by themselves establish why conversion changed.
+
+## Hypotheses rejected
+
+- **“The transaction data shows flat revenue.”** It does not under the stated event-based definition: raw successful transaction revenue net of refunds rose 16.8% on a monthly-average basis. Standard-price sensitivity gives a smaller 6.5% increase, not flat.
+- **“The decline is only a mix effect from new users.”** The fixed Q2-active audience also had substantially lower subsequent activity: fewer than half were active again in Q3.
+- **“Retries explain the payment-failure jump.”** Repeated same-day user/method/product attempts were 46 of 436 Q3 failures, so they do not account for most of the increase.
+- **“The 8-episode free limit was exceeded or visibly changed.”** No user-day exceeded 5 recorded free episodes. This rules out an observed over-limit issue in these logs, but not unrecorded paywall or eligibility changes.
+
+## Recommendations
+
+1. **Investigate Pix pricing and revenue reporting before the board pack is finalized.** Reconcile the 70 exceptional Pix rows to gateway settlement, local currency/FX, product SKU and finance records. Until confirmed, show recorded revenue and the $2,158 standard-price sensitivity side by side; the latter changes Q3 monthly growth from 16.8% to 6.5%. Track the share of charges that reconcile to the intended product price.
+
+2. **Treat August as a payment incident and test recovery in Brazil, Mexico and Colombia.** Review provider routing, checkout changes and decline reasons for Pix, Oxxo and PSE. The comparison to Q2 suggests about 227 excess failed attempts and $1,745 at reference prices in Q3. Measure success by method, product and unique payment intent after the fix; do not count retries as recovered customers.
+
+3. **Pause scaling the affiliate source until its traffic quality is verified.** Its 503 average monthly actives generated only 0.7 monthly payers and $4.98 in Q3 revenue, with very low viewing and session activity. Audit install/postback attribution and incentives, then require retained viewing and payer conversion—not installs or MAU alone—before increasing spend. Compare results against the stronger-converting sources, while accounting for their different acquisition costs.
+
+4. **Run retention and conversion tests on separate audiences.** For the prior audience, test reactivation and content reminders; recovering 10% of the roughly 1,636-user gap between Q2 and Q3 average monthly activity would mean about 164 MAU, or roughly **$230/month** at Q3 standard-price revenue per MAU. For new signups, test onboarding and paid prompts and instrument paywall exposure; a 2-point payer-rate lift across the 2,425 average monthly Q3-signup actives would mean about 49 additional payers/month. These are scenarios, not forecasts, and overlap with the payment and acquisition opportunities.
+
+## Confidence and open questions
+
+- **High confidence:** session-based MAU, recorded successful transactions, payer counts, and the timing/method concentration of failures in the available April–September data.
+- **Medium confidence:** the Pix amounts are a material reporting exception. The database establishes the amounts and timing, but not whether they are valid localized prices, bundles, or conversion/ingestion errors.
+- **Medium confidence:** affiliate traffic is low quality for monetization and engagement; **low confidence** that it is fraudulent. No device-level or test-account evidence is available.
+- **Open:** PocketToons’ official board definitions of MAU and revenue may differ from session MAU and transaction revenue. Finance-recognized revenue, recurring revenue, earlier transaction history, payment decline codes and unique purchase-intent IDs are not in this dataset.
+- **Not established:** the causal source of the August payment change, lifetime value of the newest cohorts, and whether paywall exposure or free-limit behavior changed. These checks could materially alter the attribution and the revenue opportunity estimates.
+==============================================================================
+model: gpt-6-luna | model calls: 30 | run_sql calls: 40 (0 errors) | tokens: 737,917 in / 40,537 out (26,386 reasoning) | estimated cost: $0.0941 | wall time: 427 s (model 418 s) | stopped by: query budget
+Trace: C:\Users\HP\pockettoons-analyst\investigation\traces\20261029_070058_mau-is-up-20-qoq-but-revenue-is-flat-boa.md

@@ -1,0 +1,18 @@
+[ 1] get_schema
+[ 2] sql 1/40: Checks whether transactions exist in March 2026 and compares coverage and recorded revenue -> 5 rows (0 ms)
+
+==============================================================================
+## Answer
+March 2026 net revenue is **not available in this database**; the data does not establish that it was $0.
+
+## Definition and scope
+I interpret net revenue as successful subscription and PPV revenue, less refunds, for March 1–31, 2026.
+
+## Data quality
+The transactions table starts on **April 1, 2026**, and the query found no March transaction records. So March revenue cannot be calculated from this data.
+
+## Confidence and open questions
+**High confidence** that March revenue is unavailable in this dataset. March transaction records would be needed to determine the amount.
+==============================================================================
+model: gpt-6-luna | model calls: 3 | run_sql calls: 1 (0 errors) | tokens: 6,933 in / 602 out (310 reasoning) | estimated cost: $0.0010 | wall time: 13 s (model 13 s) | stopped by: model finished
+Trace: C:\Users\HP\pockettoons-analyst\investigation\traces\20261029_063128_what-was-net-revenue-in-march-2026.md
