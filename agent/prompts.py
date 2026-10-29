@@ -5,7 +5,13 @@ Design rule: the system prompt describes a GENERIC analyst method (how a good an
 any "metric X moved, why?" question). It must not mention anything specific to the planted story
 in data/story.md. The business context below is copied from the assignment brief, i.e. what the
 GM would tell any new analyst. Every change to this file is logged in TIMELOG.md.
+
+Variants (Phase 4 eval): PT_PROMPT=v1 (default) is exactly the Phase 3 prompt. PT_PROMPT=v2 applies
+V2_EDITS below: the same method, with steps 3-5 made concrete and a self-check step 9 added. The
+edits are generic (no story-specific terms; eval/test_prompts.py checks this).
 """
+
+import os
 
 SYSTEM_PROMPT = """\
 You are a senior product analyst at PocketToons. You answer business questions by querying the \
@@ -116,5 +122,48 @@ EMPTY_REPLY_NUDGE = (
 )
 
 
-def system_prompt(max_queries, max_rows):
-    return SYSTEM_PROMPT.format(max_queries=max_queries, max_rows=max_rows)
+# ----------------------------------------------------------------------------- v2 (Phase 4)
+# Each pair is (text in SYSTEM_PROMPT, replacement). Every `old` must occur exactly once.
+V2_EDITS = [
+    # step 3: verify stated rules against the data itself, not only look for breaches
+    ("   - values that break known business rules (prices, limits, ranges), and when they started;",
+     "   - every rule or number stated in the business context (prices, limits, plans): measure what the "
+     "data actually shows over time (typical, minimum and maximum value, by month), not only whether "
+     "anything breaks it. If the data disagrees with the brief, or the rule changed, say when; such a "
+     "change is a candidate cause;"),
+    # step 4: make "look at monthly trends" an explicit query and a reported run-rate
+    ("Period averages can hide a trend.",
+     "Period averages can hide a trend: query the headline metrics by month, find the first month each "
+     "change appears, and compare the latest month with the period average (the run-rate)."),
+    # step 5: say how to separate mix from within-segment change
+    ("(the same kind of users behaving differently).",
+     "(the same kind of users behaving differently). To test it, re-measure any rate that moved "
+     "(conversion, retention, churn) inside a fixed group present in both periods, such as users "
+     "who signed up before the first period. If the rate moved there too, the cause is a change in "
+     "behaviour or product, not only in who the users are."),
+    # new step 9: self-check before the final answer, and rank drivers by size
+    ("a way to check that it worked.\n",
+     "a way to check that it worked.\n"
+     "9. For an open-ended \"why\" question, before writing the final answer check that you have done "
+     "steps 3-5 for the main metrics: stated rules measured against the data over time, the headline "
+     "metrics by month, and the main rate change re-measured in a fixed group. If not, spend your "
+     "remaining budget on them first, so keep some budget for this. Then rank the drivers by estimated "
+     "size and say which ones are small.\n"),
+]
+
+
+def _apply_v2(prompt):
+    for old, new in V2_EDITS:
+        n = prompt.count(old)
+        if n != 1:
+            raise ValueError(f"prompt v2 edit matches {n} times, expected 1: {old[:60]!r}")
+        prompt = prompt.replace(old, new)
+    return prompt
+
+
+def system_prompt(max_queries, max_rows, variant=None):
+    variant = (variant or os.environ.get("PT_PROMPT") or "v1").strip().lower()
+    if variant not in ("v1", "v2"):
+        raise ValueError(f"PT_PROMPT must be v1 or v2, got {variant!r}")
+    text = SYSTEM_PROMPT if variant == "v1" else _apply_v2(SYSTEM_PROMPT)
+    return text.format(max_queries=max_queries, max_rows=max_rows)

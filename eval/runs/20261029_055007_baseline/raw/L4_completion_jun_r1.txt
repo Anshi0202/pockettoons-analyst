@@ -1,0 +1,23 @@
+[ 1] get_schema
+[ 2] sql 1/40: Checks June 2026 view-type versus catalog-tier labels and duration validity to define whic -> 4 rows (390 ms)
+[ 3] hypotheses: 3 open, 1 inconclusive
+[ 4] sql 2/40: Quantifies June watch share on catalog-free episodes separately for free-access and subscr -> 2 rows (250 ms)
+[ 5] sql 3/40: Checks whether averaging free-episode completion shares equally by episode changes the ove -> 1 rows (141 ms)
+[ 6] hypotheses: 2 supported, 2 rejected
+[ 7] sql 4/40: Gets the exact June headline for all views of free-tier episodes and rechecks the duration -> 1 rows (234 ms)
+
+==============================================================================
+## Answer
+Viewers watched **about 80% of each free episode** on average in June 2026: **79.98%** across views of catalog-labeled free episodes.
+
+## Definition and scope
+June 1–30, 2026. Calculated the average of each view’s watch time divided by that episode’s length, across **78,061 views** of **1,053** free-tier episodes. Restricting to free-access views only gives **79.99%**, effectively the same result.
+
+## Data quality
+Checked for negative watch times, nonpositive episode lengths, and watch times longer than episode length; found **zero** such rows. The ratio of total watch time to total episode-length seconds also rounds to **79.98%**.
+
+## Confidence and open questions
+**High** confidence in the estimate. The only ambiguity is whether “free episode” means free-tier content or only playback labeled free; both interpretations give approximately 80%.
+==============================================================================
+model: gpt-6-luna | model calls: 8 | run_sql calls: 4 (0 errors) | tokens: 28,527 in / 3,024 out (1,316 reasoning) | estimated cost: $0.0044 | wall time: 33 s (model 32 s) | stopped by: model finished
+Trace: C:\Users\HP\pockettoons-analyst\investigation\traces\20261029_055055_in-june-2026-what-share-of-each-free-epi.md

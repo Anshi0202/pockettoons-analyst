@@ -13,8 +13,11 @@ ROOT = Path(__file__).resolve().parent.parent
 
 def load(folder):
     folder = Path(folder)
-    rows = [json.loads(l) for l in (folder / "results.jsonl").read_text(encoding="utf-8").splitlines() if l.strip()]
+    regraded = folder / "results_regraded.jsonl"            # written by eval/regrade.py
+    src = regraded if regraded.exists() else folder / "results.jsonl"
+    rows = [json.loads(l) for l in src.read_text(encoding="utf-8").splitlines() if l.strip()]
     meta = json.loads((folder / "meta.json").read_text(encoding="utf-8"))
+    meta["label"] = meta["label"] + (" (regraded)" if src == regraded else "")
     return meta, rows
 
 

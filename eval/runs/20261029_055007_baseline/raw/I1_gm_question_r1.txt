@@ -1,0 +1,103 @@
+[ 1] get_schema
+[ 2] sql 1/40: Establish monthly session-based MAU, revenue and payer/transaction components to verify th -> 6 rows (1983 ms)
+[ 3] hypotheses: 5 open
+[ 4] sql 2/40: Validate transaction outcome categories, payment methods and amount/sign behavior to deter -> 38 rows (14 ms)
+[ 5] sql 3/40: Inventory actual category values for key user, activity and content dimensions before filt -> 27 rows (562 ms)
+[ 6] sql 4/40: Test whether the MAU growth is accompanied by content consumption, and check for anomalous -> 6 rows (1000 ms)
+[ 7] sql 5/40: Trace revenue and failed transaction volume by month and product type to locate when and w -> 30 rows (15 ms)
+[ 8] hypotheses: 4 open, 1 supported
+[ 9] sql 6/40: Determine whether monetization deterioration is concentrated in particular countries, acco -> 18 rows (640 ms)
+[10] sql 7/40: Test whether changing acquisition mix or within-channel monetization explains MAU growth w -> 13 rows (687 ms)
+[11] sql 8/40: Locate the failed-attempt spike by method and product and identify when unusual Pix prices -> 100 rows (15 ms)
+[12] sql 9/40: Check whether the additional session-based MAU is concentrated on a platform and compare p -> 18 rows (796 ms)
+[13] sql 10/40: Quantify month-by-month payment failures by method and distinguish actual unusual-price ro -> 100 rows (15 ms)
+[14] sql 11/40: Assess whether recent acquisition cohorts, especially the newly observed affiliate source, -> 75 rows (2171 ms)
+[15] sql 12/40: Quantify the revenue bridge month by month through MAU conversion, revenue per payer, subs -> 6 rows (296 ms)
+[16] sql 13/40: Test whether PPV revenue decline corresponds to fewer PPV views/viewers or weaker content  -> 18 rows (1375 ms)
+[17] sql 14/40: Check marketing channel spend and timing, particularly whether the low-converting affiliat -> 27 rows (0 ms)
+[18] sql 15/40: Measure quarter-active users, newly acquired active users, active payers and revenue by so -> 13 rows (375 ms)
+[19] sql 16/40: Compare Q2 versus Q3 failure rates by method/product and quantify successful price anomali -> 44 rows (0 ms)
+[20] sql 17/40: Determine whether the Q3 failed-payment spike is geographically concentrated and whether i -> 60 rows (16 ms)
+[21] sql 18/40: Audit user acquisition cohort sizes and Q3 actives/payers using deduplicated date records, -> 75 rows (1405 ms)
+[22] sql 19/40: Correctly calculate Q3 active signups and monetization by signup cohort and source using o -> 75 rows (141 ms)
+[23] sql 20/40: Separate geographic audience mix from within-country monetization changes and consolidate  -> 8 rows (608 ms)
+[24] sql 21/40: Quantify Q2-to-Q3 marketing budget shifts across channels to relate investment changes to  -> 9 rows (16 ms)
+[25] sql 22/40: Track timing, unique failed customers and successful purchases for Brazil's Pix, Mexico's  -> 44 rows (0 ms)
+[26] sql 23/40: Inspect exact successful Pix amount values by month to quantify pricing/record anomalies a -> 11 rows (0 ms)
+[27] sql 24/40: Recalculate the geographic mix versus within-country revenue bridge with deduplicated user -> 8 rows (453 ms)
+[28] sql 25/40: Attribute the stated average monthly active-user growth to acquisition sources and quantif -> 7 rows (468 ms)
+[29] sql 26/40: Calculate raw and price-normalized revenue sensitivities for Q2/Q3 using explicit observed -> 2 rows (15 ms)
+[30] sql 27/40: Confirm the timing and concentration of failures across local and mainstream payment metho -> 36 rows (16 ms)
+[31] hypotheses: 5 supported
+[32] sql 28/40: Re-estimate country-level mix and within-country drivers after normalizing the unusual Q3  -> 8 rows (421 ms)
+[33] sql 29/40: Quantify all source contributions to average monthly MAU growth, treating sources absent i -> 7 rows (500 ms)
+[34] sql 30/40: Check whether the monetization shift reflects less premium-content consumption or more fre -> 8 rows (1953 ms)
+[35] sql 31/40: Check transaction logs for exact repeated same-user same-day payment rows that might infla -> 1 rows (30 ms)
+[36] sql 32/40: Estimate directional Q3 media spend per newly acquired active user by source and identify  -> 7 rows (250 ms)
+[37] sql 33/40: Quantify the possible impact of exact repeated transaction signatures on Q2/Q3 revenue and -> 29 rows (46 ms)
+[38] sql 34/40: Test whether fewer premium titles or episodes were released in Q3, which could explain wea -> 6 rows (0 ms)
+[39] sql 35/40: Estimate unique customer exposure to failed attempts and distinguish retries eventually re -> 28 rows (30 ms)
+[40] sql 36/40: Verify the precise quarter-level monthly-average conversion and revenue-per-MAU calculatio -> 2 rows (266 ms)
+[41] sql 37/40: Check whether source-level MAU growth represents users actually watching content or mostly -> 13 rows (3655 ms)
+[42] sql 38/40: Decompose Q2/Q3 volume and net revenue by subscription, PPV and refunds, isolating Pix pri -> 6 rows (16 ms)
+[43] sql 39/40: Estimate the Q3 count of customers with local-method failures and no successful same-metho -> 2 rows (0 ms)
+[44] sql 40/40: Validate the link between PPV sales and premium episode viewing, and estimate lost PPV rev -> 2 rows (171 ms)
+   query budget used up; asking for the final answer
+
+==============================================================================
+## Answer
+
+The reported picture is **not simply “20% more users, same revenue.”** Using April–June versus July–September 2026, average monthly session-based MAU rose **19.8%**, while recorded net revenue fell **2.4%**. But Q3 includes unusual Brazil Pix charges: normalizing those to the $9.99 subscription price and the $1.99–$2.99 PPV prices observed elsewhere reduces Q3 revenue from **$20.3K to $19.0K**, an **8.6% decline** versus Q2. Separately, payer conversion fell and premium PPV activity dropped sharply.
+
+For the board, present both the **reported** and **price-normalized** Q3 revenue until Finance verifies those Pix transactions. The growth is real in viewing overall, but a disproportionate share came from audiences that convert poorly; fewer premium releases and a sharp rise in local-payment failures are also consistent with weaker monetization.
+
+## Definition and scope
+
+- **Periods:** Q2 = April 1–June 30, 2026; Q3 = July 1–September 30, 2026, the latest complete quarter in the data.
+- **MAU:** distinct users with at least one session in each calendar month; compared as the average of the three monthly counts. Q2 averaged **4,449** MAU; Q3 averaged **5,328**.
+- **Net revenue:** successful transactions only, summing positive charges and negative refunds; failed attempts are excluded. This is transaction-log revenue, not audited accounting revenue.
+- **Price-normalized sensitivity:** leaves refunds as logged, but adjusts Q3 Pix subscription charges that differ from **$9.99** to $9.99, and Pix PPV charges outside the observed **$1.99/$2.99** prices to $2.99. This is a sensitivity, not a confirmed accounting correction.
+
+## Data quality
+
+- **Pix price outliers materially change the headline.** Q3 has **29** Pix subscription charges outside $9.99, including $49.90 amounts, and **18** Pix PPV charges outside the $1.99/$2.99 range, including $9.90 and $14.90 amounts. Their excess over the stated/observed benchmarks is **$1,157.39** for subscriptions and **$139.38** for PPV. Subtracting **$1,296.77** from Q3 net revenue changes it from **$20,302.43** to **$19,005.66**; the Q2 comparison changes from **−2.4%** to **−8.6%**. These amounts appear in Brazil Pix activity; validate against gateway receipts and any localized pricing or bundle rules before treating the sensitivity as the true revenue figure.
+- **Refunds do not explain the flat headline.** Refunds were **−$479.52** in Q2 and **−$489.41** in Q3. There are also two Q3 Pix refunds of **−$49.90**; if those should instead be −$9.99, Q3 would be **$79.82** higher than the price-normalized figure. I have not assumed that correction.
+- **Failed attempts are not revenue.** Failed records rose from **175** in Q2 to **422** in Q3. Some failed Pix rows also have unusual amounts, so their recorded amounts are not a reliable estimate of lost revenue.
+- **Activity is not entirely a session-tracking artifact.** Q3 monthly session MAU exceeded view-user counts by **208–302** per month, whereas they nearly matched in Q2. Still, total content views rose from **259,140** to **305,640** and average watch share remained about **80%**. The audience grew, but not all session activity represents content viewing.
+- **Other checks:** USA/US country labels were consolidated for country comparisons. Exact repeated transaction signatures exist, but repeated successful charges were only about **$31.86** in Q2 and **$45.79** in Q3; they do not explain the headline. The data has no explicit test-user flag, so I could not rule out incentivized or otherwise non-human acquisition.
+
+## Findings
+
+1. **Fewer active users paid, despite more MAU.** MAU-months rose from **13,347** to **15,985**, but payer-months fell from **2,726** to **2,290**. Payer conversion fell from **20.42%** to **14.33%**; recorded revenue per MAU-month fell from **$1.56** to **$1.27**. This is the clearest explanation for why audience growth did not translate into revenue growth.
+
+2. **A large part of the audience increase came from a very weakly monetizing affiliate source.** Affiliate contributed an average **495** MAU per month in Q3, about **56%** of the net average-MAU increase, and had **1,402** Q3 active users but only **2** payers. Only **612** of those users viewed content; that is a **43.7%** active-viewer rate, versus essentially all active users in the other sources. Among affiliate viewers, just **2** paid. TikTok also grew, from **746** to **1,400** quarter-active users, while its payer rate fell from **3.5%** to **1.5%**; influencer rose from **202** to **427** actives while its payer rate fell from **4.5%** to **2.3%**.
+
+3. **Premium PPV volume fell as premium release supply slowed.** Q3 added **1 premium title with 25 episodes**, versus **7 titles with 173 episodes** in Q2. Premium PPV views—which match successful PPV sales in both quarters—fell from **964** to **563**; PPV viewers fell from **788** to **474**. After the Pix price normalization, PPV revenue fell from **$2,073.36** to **$1,213.37**. The normalized price per sale was similar, so the decline is primarily volume. This is consistent with the sharp slowdown in premium releases, though the data does not prove that fewer releases caused all of the decline. Free views, by contrast, rose from **156,554** to **200,911**.
+
+4. **Recorded local-payment failures spiked from August, concentrated in Pix, Oxxo and PSE.** Q2 to Q3 failed attempts rose **14 to 142 for Pix**, **16 to 83 for Oxxo**, and **3 to 32 for PSE**. Apple IAP, card and Google Play failure counts were comparatively steady. In Q3, **20** local-method subscription customer/method records and **34** PPV customer/method records had a failed attempt and no successful purchase through that same method and product type. This points to a local-payment checkout problem or a change in failure logging; the data alone does not identify the cause.
+
+5. **The audience also shifted toward lower-revenue markets, and monetization weakened within many markets.** Q3 active users rose in Indonesia (**673 to 1,461**) and the Philippines (**617 to 1,290**), where Q3 revenue per quarter-active user was about **$0.56** and **$0.78**, respectively. After price normalization, the country bridge estimates a **+$1,982** contribution from changing active-user mix, offset by **−$3,771** from within-country revenue-per-active changes, for a net **−$1,789**. Brazil’s within-country result changes materially after the Pix adjustment; the raw revenue increase there should not be read as validated growth.
+
+## Hypotheses rejected
+
+- **“Refund growth caused the flat revenue.”** Rejected as a material explanation: refunds were **−$479.52** in Q2 and **−$489.41** in Q3, a small change relative to quarterly revenue.
+- **“The whole MAU increase is fake or unengaged.”** Rejected as a complete explanation: views increased **18%** and watch share stayed around **80%**. However, the affiliate cohort has weak viewing and payer outcomes, and session MAU has a modest post-June gap versus viewers.
+- **“Exact duplicate transactions explain the revenue trend.”** Rejected as material: repeated successful charges were small relative to quarterly revenue. Failed attempts and unusual Pix prices are much more consequential issues.
+
+## Recommendations
+
+1. **Reconcile Pix charges before the board and keep two revenue views until resolved.** Ask Finance/Payments to match Q3 Pix transaction IDs to gateway receipts, currency conversion, price configuration and any bundle SKUs. The question at stake is **$1,296.77** of Q3 positive-charge excess under the observed price benchmarks; if it is not valid pricing, the comparable revenue trend is a decline of about **8.6%**, not a near-flat result.
+2. **Prioritize Pix, Oxxo and PSE checkout diagnostics and recovery.** Check August release/config changes, provider response codes, retries and customer messaging by method and country; add a daily alert on failure rate. There are **20** Q3 local-method subscription customer/method records with no matching successful purchase; at one **$9.99** charge each, that is a **$199.80** one-month recovery ceiling—not a forecast. Track successful recovery and repeat failure separately.
+3. **Pause or renegotiate affiliate acquisition until its quality is verified.** The channel delivered **1,402** Q3 actives for **$360.50** spend, but only **612** viewed content and **2** paid. Validate attribution, incentivized traffic and downstream retention before scaling. As a directional scenario—not a forecast—if those **612** viewers matched the non-affiliate Q3 payer rate and normalized revenue per payer, the opportunity is about **$1.5K** in quarter revenue.
+4. **Restore or test a stronger premium release cadence.** The observed release pace fell from **173 to 25 premium episodes**, alongside **401 fewer** PPV sales. Recovering that sales volume at the normalized Q3 PPV revenue per sale implies roughly **$865** additional quarterly PPV revenue, before any subscription or retention benefit. Validate with a staged release/content experiment and measure PPV sales, premium viewing and subscription conversion.
+5. **Make acquisition decisions on paid conversion and qualified viewing, not MAU alone.** Compare source-level cost per viewer, payer conversion and revenue at consistent cohort ages; avoid shifting spend based solely on short-term installs. Track monthly MAU alongside viewer rate, payer conversion, PPV sales and price-validated net revenue.
+
+## Confidence and open questions
+
+- **High confidence:** Session-based MAU increased; payer conversion fell; PPV sales/views fell; the Q3 Pix amounts differ sharply from the stated subscription price and the PPV prices observed in other methods.
+- **Medium confidence:** Premium release slowdown and low-quality acquisition contributed to weaker monetization; the associations are strong, but the data does not isolate cause.
+- **Medium confidence:** Local-payment failures indicate a checkout issue. The increase is concentrated in local methods and begins in August, but the logs do not provide provider error codes or prove an outage.
+- **Not checked:** Pix gateway receipts, valid local pricing/bundles or currency conversion; payment-provider response codes and root cause; fraud/incentive flags or device-level traffic quality; causal lift from premium release experiments; longer-term cohort retention and customer lifetime value. Activity and revenue coverage ends **September 30, 2026**, so this analysis does not say whether the Q3 trends continued afterward.
+==============================================================================
+model: gpt-6-luna | model calls: 15 | run_sql calls: 40 (0 errors) | tokens: 399,472 in / 35,787 out (20,598 reasoning) | estimated cost: $0.0578 | wall time: 330 s (model 309 s) | stopped by: query budget
+Trace: C:\Users\HP\pockettoons-analyst\investigation\traces\20261029_055539_mau-is-up-20-qoq-but-revenue-is-flat-boa.md
