@@ -3,6 +3,10 @@
 An AI analyst agent that investigates a business question on its own: *"MAU is up 20% QoQ but revenue
 is flat. Board meeting Thursday. Figure out what's happening and what we should do about it."*
 
+**Start here:** the one-page write-up ([`WRITEUP.md`](WRITEUP.md), also as [PDF](WRITEUP.pdf)) covers
+how it was built, where it breaks, how a team would use it and what I'd do with more time. The board
+deck is [`investigation/board_deck.pptx`](investigation/board_deck.pptx).
+
 The project has four parts, built in order and logged in [`TIMELOG.md`](TIMELOG.md):
 
 1. **Data:** a synthetic SQLite database for a fictional freemium anime streaming app, with planted
@@ -97,10 +101,11 @@ python eval\check_answer_key.py
 data/            generate.py (synthetic data), validate.py, story.md (answer key; the agent never sees it)
 agent/           agent.py (loop + CLI), tools.py (read-only SQL), prompts.py (v1 and v2), test_offline.py
 investigation/   traces/ (every agent run), grading_rubric.md, grading_run2.md, verify_run2.py,
-                 run2_console.txt, board_deck.pptx
+                 run2_console.txt, board_deck.pptx, followup_checks.py (SQL behind the 3 Nov deck revision)
 eval/            questions.yaml, run_eval.py, grade.py, regrade.py, compare.py, tests, runs/, results.md
 notebooks/       pockettoons_colab.ipynb (the whole project in Google Colab)
 TIMELOG.md       what was done when, and why
+WRITEUP.md/.pdf  the one-page write-up
 ```
 
 ## 1. Data
@@ -179,9 +184,21 @@ can't prove its timing; its scoring rules are unchanged.
   - the September run-rate.
 - **Red herring:** it made "fewer premium releases" a (hedged) finding.
 
-The **board deck** (`investigation/board_deck.pptx`, 10 slides) uses only what the agent found, plus
-one slide on what it couldn't establish. Adding causes by hand would have used the answer key, since
-the same person wrote the data and the agent.
+The **board deck** (`investigation/board_deck.pptx`, 10 slides) was first built only from run 2's
+findings. It was **revised on 3 November**:
+
+- **Added the free-limit change (5 → 8 on 1 July)** as finding 1, the likely largest cause. The same
+  agent finds it when asked directly (eval question T6, both prompt versions) and found it in one v2
+  investigation run.
+- **Added the restated headline:** MAU +11.1% without bot-like accounts (not +19.8%), revenue −8.3%
+  with Pix amounts at their dollar prices, and September revenue 25.6% below June.
+- **Removed "fewer premium releases"** (the planted red herring). Pay-per-view purchases fell only on
+  days users reached the free limit (731 → 288), which points to the limit, not release timing.
+
+Every new figure comes from plain SQL in
+[`investigation/followup_checks.py`](investigation/followup_checks.py) (output in
+`followup_checks_output.txt`). One correction: run 2 priced the $9.90 Pix pay-per-view rows at $2.99,
+giving $19,085 (−8.2%); mapping every Pix amount back by the same ~5× factor gives $19,070 (−8.3%).
 
 ## 4. Eval (Phase 4)
 
@@ -216,7 +233,7 @@ Full write-up: [`eval/results.md`](eval/results.md). How to run it: [`eval/READM
   first run started 05:50). The Phase 3 rubric was written before the graded run but committed late,
   as noted above. The one later change to the eval's grading rules is logged, and every run was
   re-graded with it.
-- **v2 behind a switch:** the default stays v1, so the Phase 3 runs and the deck reproduce exactly.
+- **v2 behind a switch:** the default stays v1, so the Phase 3 runs reproduce exactly.
 
 ## Honest limits
 

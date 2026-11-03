@@ -59,3 +59,21 @@
 - Repo made public.
 
 - Checked the public repo: added the Colab notebook and the Phase 3 rubric (neither had been committed), corrected the README on when the rubric was committed, and added the earlier control run (07:00) to eval/results.md (0/6 answers invented a limit change).
+
+## Final fixes (Tue 3 Nov 2026)
+
+Goals: add the one-page write-up, put the free-limit cause in the deck and the red herring out of it,
+show the restated key numbers, and make commit messages match their contents.
+
+- Added `WRITEUP.md` and `WRITEUP.pdf` (one page), linked at the top of the README.
+- Revised the board deck (still 10 slides): added the free-limit change (5 → 8 on 1 July) as finding 1,
+  which the agent finds when asked directly and found in one v2 run; added a monthly revenue slide;
+  restated MAU (+11.1% without bot-like accounts) and revenue (−8.3%, September 25.6% below June);
+  removed "fewer premium releases". Every new number comes from `investigation/followup_checks.py`.
+- Pix re-pricing corrected from $19,085 to $19,070: run 2 had priced the $9.90 pay-per-view rows at $2.99.
+- Reworded 7 commit messages so they match what each commit contains (e.g. the "grading rubric before
+  first run" commit held only the time log and run 1's trace). No files changed in those commits, and
+  their original author and commit dates were kept, so the "eval questions before any run" timing
+  still holds. Commit hashes changed.
+- Colab notebook: removed a dangling colon from the title (left by a web edit on 31 Oct).
+- Lesson: the deck is the main deliverable and should get the most time, not the last hour.

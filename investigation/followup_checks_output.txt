@@ -1,0 +1,115 @@
+
+=== U1  Bot-like accounts ===
+affiliate_signups  bot_like  successful_payments_by_bot_like
+1442               1142      0                              
+
+=== U2  MAU by month: all users vs excluding bot-like accounts ===
+month    mau   mau_ex_bot_like  bot_like_active
+2026-04  4243  4243             0              
+2026-05  4510  4510             0              
+2026-06  4594  4594             0              
+2026-07  5123  4819             304            
+2026-08  5389  4952             437            
+2026-09  5473  5060             413            
+
+=== U3  Quarterly average MAU and growth ===
+q2_mau  q3_mau             mau_growth_pct  q2_real  q3_real            real_growth_pct
+4449.0  5328.333333333333  19.8            4449.0   4943.666666666667  11.1           
+
+=== R1  Net revenue by month: as recorded vs Pix re-priced ===
+month    recorded  repriced
+2026-04  6335.32   6335.32 
+2026-05  7007.56   7007.56 
+2026-06  7451.74   7451.74 
+2026-07  7336.12   7336.12 
+2026-08  7053.84   6192.27 
+2026-09  5912.47   5542.09 
+
+=== R2  Quarter totals and September vs June (re-priced) ===
+q2_repriced  q3_repriced  q3_vs_q2_pct  jun      sep      sep_vs_jun_pct  sep_vs_jun_recorded_pct
+20794.62     19070.48     -8.3          7451.74  5542.09  -25.6           -20.7                  
+
+=== F1  Free episodes per user-day: maximum and share at that month's maximum ===
+month    max_eps  free_user_days  pct_days_at_max
+2026-04  5        17472           26.3           
+2026-05  5        18796           26.3           
+2026-06  5        19071           26.2           
+2026-07  8        20242           10.2           
+2026-08  8        21033           10.2           
+2026-09  8        21216           9.9            
+
+=== F2  First and last day the maximum was 5 / 8 ===
+last_day_max_le_5  first_day_above_5  max_before_jul  max_from_jul  min_daily_max_from_jul
+2026-06-30         2026-07-01         5               8             8                     
+
+=== F3  Share of free user-days at the limit, by quarter ===
+qtr           free_user_days  pct_at_limit
+Q2 (limit 5)  55339           26.3        
+Q3 (limit 8)  62491           10.1        
+
+=== F4  New subscription starts per month: users who signed up before April vs newer users ===
+month    signed_up_before_april  signed_up_from_april
+2026-05  96                      77                  
+2026-06  94                      101                 
+2026-07  47                      80                  
+2026-08  30                      73                  
+2026-09  18                      67                  
+
+=== F5  Payer conversion among users who signed up before April and were active in both quarters ===
+users  pct_paid_q2  pct_paid_q3
+1757   51.17        37.45      
+
+=== P1  Payment failure rate by month: Pix/Oxxo/PSE vs all other methods ===
+month    local_latam_fail_pct  other_fail_pct
+2026-04  8.0                   5.5           
+2026-05  7.3                   5.7           
+2026-06  10.9                  4.7           
+2026-07  8.0                   6.7           
+2026-08  79.2                  7.6           
+2026-09  70.6                  6.4           
+
+=== P2  Paying subscribers (paid in the last 30 days), June 30 vs Sept 30, by region ===
+region  jun_30  sep_30
+LatAm   188     115   
+SEA     102     81    
+US      399     334   
+
+=== A1  Spend by channel and quarter ===
+channel            q2        q3     
+affiliate_network  0.0       360.5  
+google_search      5007.57   882.74 
+influencer         450.66    1170.17
+meta_ads           3587.96   1722.33
+tiktok_ads         1126.57   2706.6 
+ALL                10172.76  6842.34
+
+=== A2  Signups by channel and quarter ===
+channel            q2    q3  
+affiliate_network  0     1442
+google_search      828   147 
+influencer         136   394 
+meta_ads           714   359 
+organic            1705  1832
+referral           313   327 
+tiktok_ads         593   1320
+
+=== A3  Affiliate network: spend vs successful revenue (re-priced) ===
+spend  revenue
+360.5  19.98  
+
+=== A4  Revenue per signup in the first 60 days vs cost per signup (Apr-May signups; affiliate: Jul) ===
+channel            cohort   signups  rev60_per_signup  cost_per_signup  pct_recovered
+google_search      Apr-May  563      2.34              6.01             39.0         
+meta_ads           Apr-May  475      0.9               5.09             18.0         
+influencer         Apr-May  88       0.37              3.41             11.0         
+tiktok_ads         Apr-May  407      0.21              1.85             12.0         
+affiliate_network  Jul      389      0.03              0.25             10.0         
+
+=== Q   Quarter revenue as recorded (for the Pix adjustment) ===
+q3_recorded  q3_repriced  pix_overstatement  repriced_rows
+20302.43     19070.48     1231.95            49           
+
+=== F6  Successful pay-per-view purchases: on days the user reached the free limit vs other days ===
+qtr  ppv_purchases  on_limit_days  other_days
+Q2   964            731            233       
+Q3   563            288            275       
