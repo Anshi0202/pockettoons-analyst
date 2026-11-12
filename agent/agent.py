@@ -194,9 +194,22 @@ def _clip(text, n=MAX_TOOL_OUTPUT_CHARS):
 
 
 def run_agent(question, *, model=MODEL, max_queries=MAX_QUERIES, max_turns=MAX_TURNS,
-              trace_dir=TRACE_DIR, client=None, db_path=None, verbose=True):
-    """Answer one question. Returns a dict with answer, stats and trace paths."""
+              trace_dir=TRACE_DIR, client=None, db_path=None, verbose=True, on_event=None):
+    """Answer one question. Returns a dict with answer, stats and trace paths.
+
+    on_event (optional): called with a dict for each step as it happens, so a UI (app.py) can show
+    progress live. Kinds: model_call, model_note, schema, sql, hypotheses, note. It only observes:
+    the loop, the tools and the trace are the same with or without it.
+    """
     say = print if verbose else (lambda *a, **k: None)
+
+    def emit(kind, **data):
+        if on_event is not None:
+            try:
+                on_event({"kind": kind, **data})
+            except Exception:                    # a display problem must never stop the analysis
+                pass
+
     client = client or make_client()
     db = SQLTools(db_path)
     trace = Trace(question, model, max_queries, trace_dir)
@@ -229,6 +242,7 @@ def run_agent(question, *, model=MODEL, max_queries=MAX_QUERIES, max_turns=MAX_T
             tok_in, tok_out, tok_reason = tok_in + i, tok_out + o, tok_reason + r
             trace.event("model_call", turn=turns, seconds=round(dt, 2), input_tokens=i, output_tokens=o,
                         reasoning_tokens=r, status=getattr(resp, "status", None))
+            emit("model_call", turn=turns, seconds=round(dt, 1))
 
             items += resp.output                       # keep the model's own items (incl. reasoning)
             calls = [it for it in resp.output if getattr(it, "type", None) == "function_call"]
@@ -243,6 +257,7 @@ def run_agent(question, *, model=MODEL, max_queries=MAX_QUERIES, max_turns=MAX_T
                 continue
             if text:
                 trace.model_note(text)
+                emit("model_note", text=text)
 
             for call in calls:
                 try:
@@ -255,11 +270,13 @@ def run_agent(question, *, model=MODEL, max_queries=MAX_QUERIES, max_turns=MAX_T
                     out = db.get_schema()
                     trace.get_schema(out)
                     say(f"[{trace.step:>2}] get_schema")
+                    emit("schema", step=trace.step, output=out)
                 elif call.name == "run_sql":
                     query, purpose = args.get("query", ""), args.get("purpose", "")
                     if queries >= max_queries:
                         out = "Query budget exhausted. Do not call tools; write the final answer."
                         trace.note(f"Refused run_sql over budget: {purpose}")
+                        emit("note", text=f"Query refused, budget used up: {purpose}")
                     else:
                         queries += 1
                         result, meta = db.run_sql(query)
@@ -268,6 +285,9 @@ def run_agent(question, *, model=MODEL, max_queries=MAX_QUERIES, max_turns=MAX_T
                         trace.run_sql(purpose, query, out, meta, queries, max_queries)
                         flag = f"{meta['rows']} rows" if meta["ok"] else f"ERROR {meta['error']}"
                         say(f"[{trace.step:>2}] sql {queries}/{max_queries}: {purpose[:90]} -> {flag} ({meta['ms']} ms)")
+                        emit("sql", step=trace.step, n=queries, budget=max_queries, purpose=purpose,
+                             query=query, result=_clip(result), ok=meta["ok"], rows=meta["rows"],
+                             error=meta["error"], ms=meta["ms"])
                 elif call.name == "update_hypotheses":
                     hyps, nxt = args.get("hypotheses", []), args.get("next_step", "")
                     trace.hypotheses(hyps, nxt)
@@ -275,6 +295,7 @@ def run_agent(question, *, model=MODEL, max_queries=MAX_QUERIES, max_turns=MAX_T
                               for s in ("open", "supported", "rejected", "inconclusive")}
                     out = "Recorded. " + ", ".join(f"{v} {k}" for k, v in counts.items() if v)
                     say(f"[{trace.step:>2}] hypotheses: {out[10:]}")
+                    emit("hypotheses", step=trace.step, hypotheses=hyps, next_step=nxt)
                 else:
                     out = f"Error: unknown tool '{call.name}'."
                 items.append({"type": "function_call_output", "call_id": call.call_id, "output": out})
@@ -284,6 +305,7 @@ def run_agent(question, *, model=MODEL, max_queries=MAX_QUERIES, max_turns=MAX_T
                 items.append({"role": "user", "content": FORCE_FINAL_MESSAGE})
                 trace.note("Query budget used up; tools switched off for the next call.")
                 say("   query budget used up; asking for the final answer")
+                emit("note", text="Query budget used up; tools switched off, asking for the final answer.")
     finally:
         db.close()
 

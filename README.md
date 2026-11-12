@@ -95,6 +95,24 @@ python eval\check_answer_key.py
 
 **Full eval** (about 22 minutes, about $0.20): `python eval\run_eval.py --label mine`
 
+## Web UI: ToonsProbe
+
+A small Streamlit page for the same agent, after the quick start above (venv active, `.env` set,
+database built):
+
+```
+streamlit run app.py
+```
+
+It opens in the browser. Type a question or pick an example, press **Ask ToonsProbe**, and each step
+appears as the agent works: what it looked at, every SQL query with its one-line purpose and result,
+and its hypotheses. Then the final answer, the cost and the full trace to download. The sidebar sets
+the prompt version (v1 or v2), the query budget and, if you built it, the control database.
+
+The page only displays what the agent reports: `app.py` calls `run_agent()`, which takes an optional
+`on_event` callback for this. The loop, tools, safety limits and traces are unchanged (all 46 offline
+checks pass). UI runs save their traces in `investigation\traces\ui\`, which git ignores.
+
 ## Repository layout
 
 ```
@@ -104,6 +122,7 @@ investigation/   traces/ (every agent run), grading_rubric.md, grading_run2.md, 
                  run2_console.txt, board_deck.pptx, followup_checks.py (SQL behind the 3 Nov deck revision)
 eval/            questions.yaml, run_eval.py, grade.py, regrade.py, compare.py, tests, runs/, results.md
 notebooks/       pockettoons_colab.ipynb (the whole project in Google Colab)
+app.py           ToonsProbe, the Streamlit web UI for the agent
 TIMELOG.md       what was done when, and why
 WRITEUP.md/.pdf  the one-page write-up
 ```

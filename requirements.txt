@@ -4,3 +4,4 @@ matplotlib
 pyyaml
 python-dotenv
 openai
+streamlit

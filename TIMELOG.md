@@ -77,3 +77,13 @@ show the restated key numbers, and make commit messages match their contents.
   still holds. Commit hashes changed.
 - Colab notebook: removed a dangling colon from the title (left by a web edit on 31 Oct).
 - Lesson: the deck is the main deliverable and should get the most time, not the last hour.
+
+## Web UI (Thu 12 Nov 2026)
+
+- Added `app.py`, a Streamlit page for the agent, called ToonsProbe: a question box, each step shown
+  live (purpose, SQL, result, hypotheses), then the answer, cost and trace download. Run it with
+  `streamlit run app.py`.
+- `run_agent()` gained an optional `on_event` callback that reports each step to the page. It only
+  observes: the loop, tools, limits and trace files are unchanged, and all 46 offline checks pass.
+- Tested the page against the offline tests' fake OpenAI server (no API calls). UI traces go to
+  `investigation/traces/ui/`, which git ignores. `streamlit` added to requirements.txt.
